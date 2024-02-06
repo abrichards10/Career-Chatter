@@ -1,12 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'dart:convert';
+import 'dart:async';
 import 'package:chat_bubbles/bubbles/bubble_normal.dart';
+import 'package:chatgpt_completions/chatgpt_completions.dart';
 import 'package:demo_app/design.dart';
 import 'package:demo_app/model/message.dart';
-import 'package:demo_app/my_keys.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 class CareerChat extends StatefulWidget {
   final String name;
@@ -26,68 +25,49 @@ class _CareerChatState extends State<CareerChat> {
   String prevResponse = "";
   String sentMessage = "";
 
+  StreamSubscription? responseSubscription;
+
   void sendMsg(String command) async {
     controller.clear();
-    try {
-      if (command.isNotEmpty) {
-        setState(
-          () {
-            msgs.insert(0, Message(true, command));
-            isTyping = true;
-          },
-        );
-        scrollController.animateTo(0.0,
-            duration: const Duration(seconds: 1), curve: Curves.easeOut);
-        var response = await http.post(
-          Uri.parse("https://api.openai.com/v1/chat/completions"),
-          headers: {
-            "Authorization": "Bearer $OpenAiKey",
-            "Content-Type": "application/json"
-          },
-          body: jsonEncode(
-            {
-              "model": "gpt-3.5-turbo",
-              "messages": [
-                {
-                  "role": "user",
-                  "content": command,
-                }
-              ]
-            },
+
+    ChatGPTCompletions.instance.textCompletions(
+      TextCompletionsParams(
+        messagesTurbo: [
+          MessageTurbo(
+            role: TurboRole.user,
+            content: command,
+          ),
+        ],
+        model: GPTModel.gpt3p5turbo,
+      ),
+      onStreamValue: (characters) {
+        msgs.clear();
+
+        msgs.insert(
+          0,
+          Message(
+            false,
+            characters,
           ),
         );
-        if (response.statusCode == 200) {
-          var json = jsonDecode(response.body);
-          setState(
-            () {
-              isTyping = false;
-              msgs.insert(
-                0,
-                Message(
-                  false,
-                  json["choices"][0]["message"]["content"]
-                      .toString()
-                      .trimLeft(),
-                ),
-              );
+        setState(() {});
+      },
+      onStreamCreated: (subscription) {
+        responseSubscription = subscription;
+      },
+      // Debounce 100ms for receive next value
+      debounce: const Duration(milliseconds: 100),
+    );
+  }
 
-              prevResponse = msgs[0].msg;
-              print("PREV RESPONSE: $prevResponse");
-            },
-          );
-          scrollController.animateTo(0.0,
-              duration: const Duration(seconds: 1), curve: Curves.easeOut);
-        }
-      }
-    } on Exception {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(
-        "Some error occurred, please try again!",
-        style: TextStyle(
-          fontFamily: mainFont.fontFamily,
-        ),
-      )));
-    }
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
