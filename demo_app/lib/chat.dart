@@ -65,7 +65,7 @@ class _CareerChatState extends State<CareerChat> {
 
   @override
   void initState() {
-    sendMsg("Hi!");
+    // sendMsg("Hi!");
     super.initState();
   }
 

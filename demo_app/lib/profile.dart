@@ -14,7 +14,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class Profile extends StatefulWidget {
   final String photo;
-  final List<String> response;
   final BuildContext context;
   final String name;
   final String description;
@@ -28,7 +27,6 @@ class Profile extends StatefulWidget {
     required this.name,
     required this.description,
     required this.photo,
-    required this.response,
     required this.context,
     required this.profession,
     required this.location,
@@ -94,6 +92,7 @@ class _ProfileState extends State<Profile> {
                                   widget.distance,
                                 ),
                               );
+                          Navigator.pop(context);
                           Navigator.pop(context);
                           Navigator.push(
                             context,
