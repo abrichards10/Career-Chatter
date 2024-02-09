@@ -38,7 +38,7 @@ class _SavedScreenRemovePopup extends State<ProfileDataRemovePopup> {
           ),
           SizedBox(height: 8),
           Text(
-            "Are you sure you\nwant to unsave this profile?",
+            "Are you sure you\nwant to delete this conversation?",
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 15,
@@ -62,8 +62,8 @@ class _SavedScreenRemovePopup extends State<ProfileDataRemovePopup> {
                     Navigator.of(context).pop(true);
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFFEb00FF),
                     shape: RoundedRectangleBorder(
+                      side: BorderSide(color: Colors.grey),
                       borderRadius: BorderRadius.circular(15.625),
                     ),
                     elevation: 0,
@@ -74,7 +74,6 @@ class _SavedScreenRemovePopup extends State<ProfileDataRemovePopup> {
                     style: TextStyle(
                       fontSize: 15,
                       fontFamily: 'Poppins-Bold',
-                      color: Colors.white,
                     ),
                   ),
                 ),
@@ -87,7 +86,6 @@ class _SavedScreenRemovePopup extends State<ProfileDataRemovePopup> {
                     Navigator.of(context).pop(false);
                   },
                   style: OutlinedButton.styleFrom(
-                    side: BorderSide(color: Color(0xFFEb00FF)),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15.625),
                     ),
@@ -98,7 +96,6 @@ class _SavedScreenRemovePopup extends State<ProfileDataRemovePopup> {
                     style: TextStyle(
                       fontSize: 15,
                       fontFamily: 'Poppins-Bold',
-                      color: Color(0xFFEb00FF),
                     ),
                   ),
                 ),

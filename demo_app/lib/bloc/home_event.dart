@@ -6,8 +6,8 @@ class SavedProfileEvent extends HomeEvent {
   final String description;
   final String profession;
   final String location;
-  final String salary;
-  final String distance;
+  final int salary;
+  final int distance;
 
   SavedProfileEvent(
     this.name,

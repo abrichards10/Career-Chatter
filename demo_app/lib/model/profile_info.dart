@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:random_avatar/random_avatar.dart';
+
 class ProfileData {
   String? name;
   String? description;
-  String? photo;
+  String photo;
   String? location;
   String? profession;
   String? salary;
@@ -12,7 +14,7 @@ class ProfileData {
   ProfileData({
     this.name,
     this.description,
-    this.photo,
+    required this.photo,
     this.location,
     this.profession,
     this.salary,
@@ -23,10 +25,14 @@ class ProfileData {
     return ProfileData(
       name: parsedJson['name'] ?? "Mohammed",
       description: parsedJson['description'] ?? "No Description",
-      photo: parsedJson['name'] ?? "assets/blank_profile.png",
+      photo: parsedJson['name'] ??
+          RandomAvatarString(
+            DateTime.now().toIso8601String(),
+            trBackground: false,
+          ),
       location: parsedJson['name'] ?? "San Francisco",
       profession: parsedJson['name'] ?? "Software Engineer",
-      salary: parsedJson['name'] ?? "100,000",
+      salary: parsedJson['name'] ?? "50000",
       distance: parsedJson['name'] ?? "5",
     );
   }

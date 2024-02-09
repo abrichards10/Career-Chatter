@@ -14,11 +14,12 @@ class PrefsHelper {
   String get name => Prefs.getString(PrefKeys.name) ?? "";
   String get photo => Prefs.getString(PrefKeys.photo) ?? "";
 
-  String get description => Prefs.getString(PrefKeys.description) ?? "";
-  String get profession => Prefs.getString(PrefKeys.profession) ?? "";
-  String get salary => Prefs.getString(PrefKeys.salary) ?? "";
-  String get location => Prefs.getString(PrefKeys.location) ?? "";
-  String get distance => Prefs.getString(PrefKeys.distance) ?? "";
+  // String get description => Prefs.getString(PrefKeys.description) ?? "";
+  String get profession =>
+      Prefs.getString(PrefKeys.profession) ?? "Software Engineer";
+  int get salary => Prefs.getInt(PrefKeys.salary) ?? 50000;
+  String get location => Prefs.getString(PrefKeys.location) ?? "San Francisco";
+  int get distance => Prefs.getInt(PrefKeys.distance) ?? 10;
 
   String get savedProfile =>
       Prefs.getString(PrefKeys.savedProfile) ?? ""; // SAVED PROFILE
@@ -26,11 +27,11 @@ class PrefsHelper {
   set name(String value) => Prefs.setString(PrefKeys.name, value);
   set photo(String value) => Prefs.setString(PrefKeys.photo, value);
 
-  set description(String value) => Prefs.setString(PrefKeys.description, value);
+  // set description(String value) => Prefs.setString(PrefKeys.description, value);
   set profession(String value) => Prefs.setString(PrefKeys.profession, value);
-  set salary(String value) => Prefs.setString(PrefKeys.salary, value);
+  set salary(int value) => Prefs.setInt(PrefKeys.salary, value);
   set location(String value) => Prefs.setString(PrefKeys.location, value);
-  set distance(String value) => Prefs.setString(PrefKeys.distance, value);
+  set distance(int value) => Prefs.setInt(PrefKeys.distance, value);
 
   set savedProfile(String value) =>
       Prefs.setString(PrefKeys.savedProfile, value);

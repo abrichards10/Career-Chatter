@@ -2,6 +2,7 @@
 
 import 'dart:async';
 import 'dart:developer';
+import 'dart:ui' as ui;
 
 import 'package:chatgpt_completions/chatgpt_completions.dart';
 import 'package:demo_app/bloc/home_bloc.dart';
@@ -13,12 +14,14 @@ import 'package:demo_app/options.dart';
 import 'package:demo_app/profile.dart';
 import 'package:demo_app/profile_remove_popup.dart';
 import 'package:demo_app/shared_prefs.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:dart_openai/dart_openai.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:random_avatar/random_avatar.dart';
 import 'package:random_name_generator/random_name_generator.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class CareerChatbotPage extends StatefulWidget {
   @override
@@ -26,22 +29,21 @@ class CareerChatbotPage extends StatefulWidget {
 }
 
 class _CareerChatbotPageState extends State<CareerChatbotPage> {
-  late SingleValueDropDownController _cnt;
-  late SingleValueDropDownController _cnt1;
-
-  double _currentSliderValue = 50000;
-  double _currentSliderValue1 = 10;
-
   List<String> _response = [];
   String? currentHeadshot = "";
-  final TextEditingController _controller = TextEditingController();
-  final List<Widget> _painters = <Widget>[];
   var randomNames = RandomNames(Zone.us);
-  var profile = ProfileData();
-  var profession = "";
-  var location = "";
-  var salary = "";
-  var distance = "";
+
+  String photo = RandomAvatarString(
+    DateTime.now().toIso8601String(),
+    trBackground: false,
+  );
+
+  var profile = ProfileData(
+    photo: RandomAvatarString(
+      DateTime.now().toIso8601String(),
+      trBackground: false,
+    ),
+  );
   List<ProfileData> profileList = [];
   List<ProfileData> _list = [];
   String? currentSavedDishInfoScreen = "";
@@ -74,15 +76,11 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
 
   @override
   void initState() {
-    _cnt = SingleValueDropDownController();
-    _cnt1 = SingleValueDropDownController();
-
     if (PrefsHelper().name != "") {
+      print("profileList::: $profileList");
       profileList = ProfileData.decode(PrefsHelper().savedProfile);
     }
     _list.addAll(profileList);
-    super.initState();
-
     super.initState();
   }
 
@@ -92,6 +90,7 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
   }
 
   Widget _imageAndTextRow(ProfileData profile, double screenWidth) {
+    print("PICTURE DATA: ${profile.photo}");
     return Container(
       padding: EdgeInsets.fromLTRB(
         0,
@@ -102,32 +101,19 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
       child: Row(
         children: [
           Container(
-            height: screenWidth * .22,
-            width: screenWidth * .35,
+            width: screenWidth * .2,
+            height: screenWidth * .2,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
+              shape: BoxShape.circle,
+              color: Colors.blueGrey.withOpacity(0.5),
               border: Border.all(
-                color: Color(0xFFEb00FF),
-                width: 2,
+                width: 3,
+                color: Colors.teal,
               ),
-              image: !thereIsError
-                  ? DecorationImage(
-                      image: NetworkImage(profile.photo.toString()),
-                      onError: (Object e, StackTrace? stackTrace) {
-                        if (stackTrace != null) {
-                          log(stackTrace.toString());
-                        }
-                        setState() {
-                          print("🚩THERES AN ERORRRR");
-                          thereIsError = true;
-                        }
-                      },
-                      fit: BoxFit.fill,
-                    )
-                  : DecorationImage(
-                      image: AssetImage("assets/blank_profile.png"),
-                    ),
             ),
+            child: SvgPicture.string(
+              profile.photo,
+            ), // Container(),
           ),
           _textColumn(profile, screenWidth),
         ],
@@ -176,27 +162,11 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
   _dishDisplayBlocListener(BuildContext context, HomeState state) {
     if (state is SavedProfileState) {
       print("SAVED");
-      _list.clear();
       _list.addAll(state.data);
+      print("lIST: $_list");
       PrefsHelper().savedProfile = ProfileData.encode(state.data);
       setState(() {});
     }
-
-    // if (state is RemoveDishFromListState) {
-    //   _list.clear();
-    //   _list.addAll(state.list);
-    //   PrefsHelper().savedPrefs = SavedData.encode(state.list);
-    //   setState(() {});
-    // }
-
-    // if (state is RemoveDishFromInnerState) {
-    //   print("GOT TO INNERRRR ");
-    //   _list.removeWhere(
-    //       (element) => element.dishId == currentSavedDishInfoScreen);
-    //   currentSavedDishInfoScreen == "";
-    //   PrefsHelper().savedPrefs = SavedData.encode(_list);
-    //   setState(() {});
-    // }
   }
 
   @override
@@ -221,24 +191,24 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
                     // height: 3,
                   ),
                 ),
-                DropDownTextField(
-                  controller: _cnt,
-                  clearOption: true,
-                  enableSearch: true,
-                  searchDecoration:
-                      const InputDecoration(hintText: "Enter a profession"),
-                  validator: (value) {
-                    if (value == null) {
-                      return "Required field";
-                    } else {
-                      return null;
-                    }
+                DropdownSearch<String>(
+                  items: professions,
+                  popupProps: PopupProps.menu(
+                    showSearchBox: true,
+                  ),
+                  dropdownDecoratorProps: DropDownDecoratorProps(
+                    textAlignVertical: TextAlignVertical.center,
+                    dropdownSearchDecoration: InputDecoration(
+                        border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    )),
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      PrefsHelper().profession = value.toString();
+                    });
                   },
-                  dropDownItemCount: 6,
-                  dropDownList: dropdownValues,
-                  onChanged: (val) {
-                    profession = val.toString();
-                  },
+                  selectedItem: PrefsHelper().profession,
                 ),
                 Text(
                   "Location",
@@ -247,23 +217,24 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
                     height: 3,
                   ),
                 ),
-                DropDownTextField(
-                  controller: _cnt1,
-                  clearOption: true,
-                  enableSearch: true,
-                  // dropdownColor: Colors.green,
-                  searchDecoration:
-                      const InputDecoration(hintText: "Enter a location"),
-                  validator: (value) {
-                    if (value == null) {
-                      return "Required field";
-                    } else {
-                      return null;
-                    }
+                DropdownSearch<String>(
+                  items: locations,
+                  popupProps: PopupProps.menu(
+                    showSearchBox: true,
+                  ),
+                  dropdownDecoratorProps: DropDownDecoratorProps(
+                    textAlignVertical: TextAlignVertical.center,
+                    dropdownSearchDecoration: InputDecoration(
+                        border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    )),
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      PrefsHelper().location = value.toString();
+                    });
                   },
-                  dropDownItemCount: 4,
-                  dropDownList: dropdownValuesLocation,
-                  onChanged: (val) {},
+                  selectedItem: PrefsHelper().location,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -276,7 +247,7 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
                       ),
                     ),
                     Text(
-                      "\$${_currentSliderValue.round()}   ",
+                      "\$${PrefsHelper().salary}   ",
                       style: TextStyle(
                         fontSize: screenWidth * .04,
                       ),
@@ -287,18 +258,17 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
                   data: SliderTheme.of(context).copyWith(
                     overlayShape: SliderComponentShape.noOverlay,
                   ),
-                  child: Container(
+                  child: SizedBox(
                     width: screenWidth * 2,
                     child: Slider(
                       min: 0,
                       max: 400000,
                       divisions: 100,
-                      value: _currentSliderValue,
-                      label: _currentSliderValue.round().toString(),
+                      value: PrefsHelper().salary.toDouble(),
+                      label: PrefsHelper().salary.toString(),
                       onChanged: (value) {
                         setState(() {
-                          _currentSliderValue = value;
-                          salary = _currentSliderValue.toString();
+                          PrefsHelper().salary = value.toInt();
                         });
                       },
                     ),
@@ -315,7 +285,7 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
                       ),
                     ),
                     Text(
-                      "${_currentSliderValue1.round()} mi  ",
+                      "${PrefsHelper().distance} mi  ",
                       style: TextStyle(
                         fontSize: screenWidth * .04,
                       ),
@@ -326,17 +296,16 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
                   data: SliderTheme.of(context).copyWith(
                     overlayShape: SliderComponentShape.noOverlay,
                   ),
-                  child: Container(
+                  child: SizedBox(
                     width: screenWidth * 2,
                     child: Slider(
-                      value: _currentSliderValue1,
+                      value: PrefsHelper().distance.toDouble(),
                       max: 100,
                       divisions: 100,
-                      label: _currentSliderValue1.round().toString(),
+                      label: PrefsHelper().distance.toString(),
                       onChanged: (double value) {
                         setState(() {
-                          _currentSliderValue1 = value;
-                          distance = _currentSliderValue1.toString();
+                          PrefsHelper().distance = value.toInt();
                         });
                       },
                     ),
@@ -348,45 +317,36 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
                 ElevatedButton(
                   onPressed: () {
                     setState(() {
-                      sendMsg(
-                          "what is the range of the average salary of an artist located in grass valley, ca - just give me the numbers");
+                      // sendMsg(
+                      //     "what is the range of the average salary of an artist located in grass valley, ca - just give me the numbers");
 
-                      String svg = RandomAvatarString(
+                      photo = RandomAvatarString(
                         DateTime.now().toIso8601String(),
                         trBackground: false,
                       );
 
-                      _painters.clear();
-
-                      _painters.add(
-                        RandomAvatar(
-                          DateTime.now().toIso8601String(),
-                          height: 50,
-                          width: 52,
-                        ),
-                      );
-                      _controller.text = svg;
+                      print("PHOTO:: $photo");
 
                       String name = randomNames.name();
-                      String description = "Sup";
-                      String photo = "assets/blank_profile.png"; // TODO: CHANGE
+                      String description =
+                          'Hi! I\'m $name and I am a ${PrefsHelper().profession}.  I make \$${PrefsHelper().salary} per year and I live in ${PrefsHelper().location}';
 
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return Profile(
                             name: name,
-                            painters: _painters,
+                            description: description,
+                            photo: photo,
                             response: _response,
                             context: context,
-                            profession: profession,
-                            location: location,
-                            salary: salary,
-                            distance: distance,
+                            profession: PrefsHelper().profession,
+                            location: PrefsHelper().location,
+                            salary: PrefsHelper().salary,
+                            distance: PrefsHelper().distance,
                           );
                         },
                       );
-                      setState(() {});
                     });
                   },
                   child: const Text('Generate Bot'),
@@ -398,7 +358,12 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
                       child: ListView.builder(
                         itemCount: _list.length,
                         itemBuilder: (context, index) {
+                          print("${_list[index]}");
                           ProfileData profile = _list[index];
+
+                          print("BEFORE PROFILE: ${profile.name}");
+                          print("BEFORE PROFILE: ${profile.photo}");
+                          print("BEFORE PROFILE: ${profile.description}");
 
                           return Container(
                             decoration: BoxDecoration(
@@ -416,7 +381,9 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
                                   context: context,
                                   builder: (BuildContext context) =>
                                       ProfileDataRemovePopup(
-                                          profile: profile, dismissed: true),
+                                    profile: profile,
+                                    dismissed: true,
+                                  ),
                                 );
                               },
                               onDismissed: (direction) {
@@ -427,7 +394,6 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
                                   currentSavedDishInfoScreen == "";
                                   PrefsHelper().savedProfile =
                                       ProfileData.encode(_list);
-                                  setState(() {});
                                   _list.removeAt(index);
                                 });
                               },
@@ -451,7 +417,7 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
                                     MaterialPageRoute(
                                       builder: (context) => CareerChat(
                                         name: (profile.name).toString(),
-                                        painters: _painters,
+                                        photo: profile.photo,
                                       ),
                                     ),
                                   );

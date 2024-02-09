@@ -5,12 +5,14 @@ import 'package:demo_app/bloc/home_bloc.dart';
 import 'package:demo_app/design.dart';
 import 'package:demo_app/home.dart';
 import 'package:demo_app/my_keys.dart';
+import 'package:demo_app/prefs_keys.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prefs/prefs.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Prefs.init();
   OpenAI.apiKey = OpenAiKey;
   OpenAI.requestsTimeOut =
       const Duration(seconds: 60); // 60 seconds before request times out

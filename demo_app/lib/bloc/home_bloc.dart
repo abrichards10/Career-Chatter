@@ -35,15 +35,22 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         photo: event.photo,
         location: event.location,
         profession: event.profession,
-        salary: event.salary,
-        distance: event.distance,
+        salary: event.salary.toString(),
+        distance: event.distance.toString(),
       ),
     );
 
-    PrefsHelper().savedProfile = ProfileData.encode(encodedList);
-    List<ProfileData> savedProfileList =
-        ProfileData.decode(PrefsHelper().savedProfile);
+    // print("Encoded AFTER: ${encodedList.first.name}");
 
-    emit(SavedProfileState(savedProfileList));
+    // PrefsHelper().savedProfile = ProfileData.encode(encodedList);
+
+    // print("Encoded AFTER: ENCODE${PrefsHelper().savedProfile}");
+
+    // List<ProfileData> savedProfileList =
+    //     ProfileData.decode(PrefsHelper().savedProfile);
+
+    // print("Saved profile list: $savedProfileList");
+
+    emit(SavedProfileState(encodedList));
   }
 }

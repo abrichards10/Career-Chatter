@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:typed_data';
+
 import 'package:demo_app/bloc/home_bloc.dart';
 import 'package:demo_app/bloc/home_event.dart';
 import 'package:demo_app/chat.dart';
@@ -7,21 +9,25 @@ import 'package:demo_app/model/profile_info.dart';
 import 'package:demo_app/shared_prefs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'dart:ui' as ui;
+import 'package:flutter_svg/flutter_svg.dart';
 
 class Profile extends StatefulWidget {
-  final List<Widget> painters;
+  final String photo;
   final List<String> response;
   final BuildContext context;
   final String name;
+  final String description;
   final String profession;
   final String location;
-  final String salary;
-  final String distance;
+  final int salary;
+  final int distance;
 
   const Profile({
     super.key,
     required this.name,
-    required this.painters,
+    required this.description,
+    required this.photo,
     required this.response,
     required this.context,
     required this.profession,
@@ -63,9 +69,11 @@ class _ProfileState extends State<Profile> {
                     color: Colors.blueGrey.withOpacity(0.5),
                     border: Border.all(width: 3, color: Colors.teal),
                   ),
-                  child: widget.painters.isEmpty
+                  child: widget.photo == ""
                       ? Container()
-                      : widget.painters[0],
+                      : SvgPicture.string(
+                          widget.photo,
+                        ),
                 ),
                 Column(
                   children: [
@@ -78,7 +86,7 @@ class _ProfileState extends State<Profile> {
                           context.read<HomeBloc>().add(
                                 SavedProfileEvent(
                                   widget.name,
-                                  "assets/blank_profile.png",
+                                  widget.photo,
                                   "",
                                   widget.profession,
                                   widget.location,
@@ -86,14 +94,15 @@ class _ProfileState extends State<Profile> {
                                   widget.distance,
                                 ),
                               );
-
                           Navigator.pop(context);
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => CareerChat(
-                                    name: widget.name,
-                                    painters: widget.painters)),
+                              builder: (context) => CareerChat(
+                                name: widget.name,
+                                photo: widget.photo,
+                              ),
+                            ),
                           );
                         },
                         child: Center(
@@ -129,11 +138,23 @@ class _ProfileState extends State<Profile> {
               ],
             ),
             const SizedBox(height: 16.0),
-            Text(widget.response.toString()),
-            Text('Hi! I\'m ${widget.name} and I am a ${widget.profession} '),
-            Text('Profession: ${widget.profession}'),
-            Text('Salary: ${widget.salary}'),
-            Text('Location: ${widget.location}'),
+            Text(widget.description.toString()),
+            const SizedBox(height: 10.0),
+            Container(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Profession: ${widget.profession}',
+                textAlign: TextAlign.start,
+              ),
+            ),
+            Container(
+              alignment: Alignment.centerLeft,
+              child: Text('Salary: ${widget.salary}'),
+            ),
+            Container(
+              alignment: Alignment.centerLeft,
+              child: Text('Location: ${widget.location}'),
+            ),
           ],
         ),
       ),

@@ -1,17 +1,20 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:async';
+import 'dart:ui' as ui;
 import 'package:chat_bubbles/bubbles/bubble_normal.dart';
 import 'package:chatgpt_completions/chatgpt_completions.dart';
 import 'package:demo_app/design.dart';
 import 'package:demo_app/model/message.dart';
+import 'package:demo_app/profile.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class CareerChat extends StatefulWidget {
   final String name;
-  final List painters;
+  final String photo;
 
-  CareerChat({required this.name, required this.painters});
+  CareerChat({required this.name, required this.photo});
 
   @override
   State<CareerChat> createState() => _CareerChatState();
@@ -62,12 +65,8 @@ class _CareerChatState extends State<CareerChat> {
 
   @override
   void initState() {
+    sendMsg("Hi!");
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   @override
@@ -95,7 +94,11 @@ class _CareerChatState extends State<CareerChat> {
                 color: Colors.blueGrey.withOpacity(0.5),
                 border: Border.all(width: 3, color: Colors.teal),
               ),
-              child: widget.painters.isEmpty ? Container() : widget.painters[0],
+              child: widget.photo == ""
+                  ? Container()
+                  : SvgPicture.string(
+                      widget.photo,
+                    ),
             ),
             SizedBox(
               width: 15,
