@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Prefs {
   static late final SharedPreferences prefs;
 
+  // call this method from initState() function of mainApp().
   static Future<SharedPreferences> init() async {
     prefs = await SharedPreferences.getInstance();
     return prefs;
@@ -21,6 +22,7 @@ class Prefs {
   static Future<bool> setString(String key, String value) async =>
       await prefs.setString(key, value);
 
+  //use this for idList
   static Future<bool> setStringList(String key, List<String> value) async =>
       await prefs.setStringList(key, value);
 

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:demo_app/api_service.dart';
 import 'package:demo_app/bloc/home_event.dart';
 import 'package:demo_app/bloc/home_state.dart';
@@ -16,24 +18,32 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   _handleEvents() {
     on<SavedProfileEvent>(savedProfileMethod);
     on<RemoveProfileEvent>(removeProfileMethod);
+    on<ReturnSavedProfile>(returnSavedProfileMethod);
+  }
+
+  Future<void> returnSavedProfileMethod(
+      ReturnSavedProfile event, Emitter<HomeState> emit) async {
+    List<ProfileData> savedProfileList =
+        ProfileData.decode(PrefsHelper().savedProfile);
+    emit(ReturnSavedProfileState(savedProfileList));
   }
 
   Future<void> savedProfileMethod(
       SavedProfileEvent event, Emitter<HomeState> emit) async {
     if (PrefsHelper().savedProfile != "") {
-      print("TRIED TO DECODE");
       encodedList = ProfileData.decode(PrefsHelper().savedProfile);
     }
 
-    print(
-      "name: ${event.name}, \ndescription: ${event.description},\nlocation: ${event.location} \nprofession: ${event.profession}, \nsalary: ${event.salary}, \ndistance: ${event.distance}",
-    );
+    // print(
+    //   "name: ${event.name}, \ndescription: ${event.description},\nlocation: ${event.location} \nprofession: ${event.profession}, \nsalary: ${event.salary}, \ndistance: ${event.distance}, \nphoto: ${event.photo}",
+    // );
+
     if (event.name != null) {
       encodedList.insert(
         0,
         ProfileData(
           name: event.name,
-          description: event.description,
+          description: "SUP", // event.description,
           location: event.location,
           profession: event.profession,
           salary: event.salary.toString(),
@@ -44,20 +54,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
       PrefsHelper().savedProfile = ProfileData.encode(encodedList);
 
-      print("Encoded AFTER: ENCODE${PrefsHelper().savedProfile}");
-
       List<ProfileData> savedProfileList =
           ProfileData.decode(PrefsHelper().savedProfile);
 
-      print("Saved profile list: ${savedProfileList.last.name}");
-      print("Saved profile list: ${savedProfileList.last.distance}");
-      print("Saved profile list: ${savedProfileList.last.salary}");
-
-      print("Saved profile list: ${savedProfileList.first.name}");
-      print("Saved profile list: ${savedProfileList.first.distance}");
-      print("Saved profile list: ${savedProfileList.first.salary}");
-
-      emit(SavedProfileState(encodedList));
+      emit(SavedProfileState(savedProfileList));
     }
   }
 

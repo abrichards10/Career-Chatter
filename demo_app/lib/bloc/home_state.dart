@@ -12,3 +12,8 @@ class SavedProfileState extends HomeState {
 class RemoveProfileState extends HomeState {
   RemoveProfileState();
 }
+
+class ReturnSavedProfileState extends HomeState {
+  List<ProfileData> data;
+  ReturnSavedProfileState(this.data);
+}

@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:math';
 import 'dart:ui' as ui;
@@ -46,7 +47,6 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
   );
 
   List<ProfileData> _profileList = [];
-  // List<ProfileData> savedDataList = [];
 
   String? currentSavedProfileInfoScreen = "";
   bool thereIsError = false;
@@ -57,8 +57,6 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
   double sliderDistance = PrefsHelper().distance.toDouble();
 
   void _showFilters() async {
-    // <-- note the async keyword here
-
     // this will contain the result from Navigator.pop(context, result)
     final _selectedFilters = await showDialog<double>(
       context: context,
@@ -104,12 +102,13 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
 
   @override
   void initState() {
+    super.initState();
+
     if (_profileList.isNotEmpty) {
       _profileList = ProfileData.decode(PrefsHelper().savedProfile);
     }
-    // _profileList.addAll(savedDataList);
 
-    super.initState();
+    context.read<HomeBloc>().add(ReturnSavedProfile());
   }
 
   @override
@@ -197,6 +196,14 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
       PrefsHelper().savedProfile = ProfileData.encode(_profileList);
       setState(() {});
     }
+    if (state is ReturnSavedProfileState) {
+      print("GOT TO RETURNSAVED");
+      _profileList = state.data;
+      PrefsHelper().savedProfile = ProfileData.encode(state.data);
+
+      print(_profileList);
+      setState(() {});
+    }
   }
 
   @override
@@ -220,112 +227,111 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    GestureDetector(
-                      child: Container(
-                        height: screenWidth * .3,
-                        width: screenWidth * .3,
-                        child: Card(
-                          child: Text(
-                            "+",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: screenWidth * .2,
-                              height: 0,
+                Container(
+                  padding: EdgeInsets.only(bottom: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        child: Container(
+                          height: screenWidth * .3,
+                          width: screenWidth * .3,
+                          child: Card(
+                            child: Text(
+                              "+",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: screenWidth * .2,
+                                height: 0,
+                              ),
                             ),
                           ),
                         ),
+                        onTap: () {
+                          _showFilters();
+                        },
                       ),
-                      onTap: () {
-                        _showFilters();
-                      },
-                    ),
-                    GestureDetector(
-                      child: Container(
-                        height: screenWidth * .3,
-                        width: screenWidth * .6,
-                        child: Card(
-                          child: Container(
-                            padding: EdgeInsets.fromLTRB(
-                              screenWidth * .04,
-                              screenWidth * .04,
-                              screenWidth * .04,
-                              screenWidth * .04,
-                            ),
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: screenWidth * .2,
-                                  height: screenWidth * .2,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.blueGrey.withOpacity(0.5),
-                                    border: Border.all(
-                                      width: 1,
-                                      color: Colors.transparent,
+                      GestureDetector(
+                        child: Container(
+                          height: screenWidth * .3,
+                          width: screenWidth * .6,
+                          child: Card(
+                            child: Container(
+                              padding: EdgeInsets.fromLTRB(
+                                screenWidth * .04,
+                                screenWidth * .04,
+                                screenWidth * .04,
+                                screenWidth * .04,
+                              ),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: screenWidth * .2,
+                                    height: screenWidth * .2,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.blueGrey.withOpacity(0.5),
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: Image(
+                                        image: AssetImage(
+                                            "assets/blank_profile.png"),
+                                      ),
                                     ),
                                   ),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: Image(
-                                      image: AssetImage(
-                                          "assets/blank_profile.png"),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    "Randomize!",
+                                    style: TextStyle(
+                                      fontSize: screenWidth * .045,
                                     ),
                                   ),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  "Randomize!",
-                                  style: TextStyle(
-                                    fontSize: screenWidth * .045,
-                                  ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ),
+                        onTap: () {
+                          setState(() {
+                            String randomName = randomNames.name();
+                            String thisProfession = professions[
+                                _random.nextInt(professions.length)];
+                            String thisLocation =
+                                locations[_random.nextInt(locations.length)];
+                            int thisSalary = _random.nextInt(400000) +
+                                15000; // TODO: change to calculated;
+                            int thisDistance = _random.nextInt(25);
+
+                            String thisDescription =
+                                'Hi! I\'m $randomName and I am a $thisProfession.  I make \$$thisSalary per year and I live in $thisLocation';
+
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return Profile(
+                                  name: randomName,
+                                  photo: RandomAvatarString(
+                                    DateTime.now().toIso8601String(),
+                                    trBackground: false,
+                                  ),
+                                  description: thisDescription,
+                                  context: context,
+                                  profession: thisProfession,
+                                  location: thisLocation,
+                                  salary: thisSalary,
+                                  distance: thisDistance,
+                                );
+                              },
+                            );
+                          });
+                        },
                       ),
-                      onTap: () {
-                        setState(() {
-                          String randomName = randomNames.name();
-                          String thisProfession =
-                              professions[_random.nextInt(professions.length)];
-                          String thisLocation =
-                              locations[_random.nextInt(locations.length)];
-                          int thisSalary = _random.nextInt(400000) +
-                              15000; // TODO: change to calculated;
-                          int thisDistance = _random.nextInt(25);
-
-                          String thisDescription =
-                              'Hi! I\'m $randomName and I am a $thisProfession.  I make \$$thisSalary per year and I live in $thisLocation';
-
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return Profile(
-                                name: randomName,
-                                photo: RandomAvatarString(
-                                  DateTime.now().toIso8601String(),
-                                  trBackground: false,
-                                ),
-                                description: thisDescription,
-                                context: context,
-                                profession: thisProfession,
-                                location: thisLocation,
-                                salary: thisSalary,
-                                distance: thisDistance,
-                              );
-                            },
-                          );
-                        });
-                      },
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
                 SizedBox(
                   height: screenWidth + 50,
@@ -362,7 +368,6 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
                                   .read<HomeBloc>()
                                   .add(RemoveProfileEvent());
                               _profileList.removeAt(index);
-                           
                             });
                           },
                           background: Container(
@@ -485,6 +490,7 @@ class _CareerFiltersState extends State<CareerFilters> {
               style: TextStyle(
                 fontSize: screenWidth * .05,
                 height: 3,
+                fontWeight: FontWeight.bold,
               ),
             ),
           ),
@@ -514,6 +520,7 @@ class _CareerFiltersState extends State<CareerFilters> {
               style: TextStyle(
                 fontSize: screenWidth * .05,
                 height: 3,
+                fontWeight: FontWeight.bold,
               ),
             ),
           ),
@@ -547,6 +554,7 @@ class _CareerFiltersState extends State<CareerFilters> {
                 style: TextStyle(
                   fontSize: screenWidth * .05,
                   height: 3,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
               Text(
@@ -586,6 +594,7 @@ class _CareerFiltersState extends State<CareerFilters> {
                 style: TextStyle(
                   fontSize: screenWidth * .05,
                   height: 3,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
               Text(
@@ -622,6 +631,9 @@ class _CareerFiltersState extends State<CareerFilters> {
           Container(
             alignment: Alignment.center,
             child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                elevation: 3,
+              ),
               onPressed: () {
                 setState(() {
                   // sendMsg(
@@ -653,7 +665,13 @@ class _CareerFiltersState extends State<CareerFilters> {
                   );
                 });
               },
-              child: const Text('Generate Bot'),
+              child: Text(
+                'Generate Bot',
+                style: TextStyle(
+                  fontSize: screenWidth * .04,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ),
         ],

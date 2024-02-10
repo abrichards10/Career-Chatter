@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:random_avatar/random_avatar.dart';
 
 class ProfileData {
   String? name;
@@ -20,17 +19,27 @@ class ProfileData {
     this.distance,
   });
 
-  factory ProfileData.fromJson(Map<String, dynamic> parsedJson) {
+  factory ProfileData.fromJson(Map<String, dynamic> jsonData) {
     return ProfileData(
-      name: parsedJson['name'],
-      description: parsedJson['description'],
-      photo: parsedJson['photo'],
-      location: parsedJson['location'],
-      profession: parsedJson['profession'],
-      salary: parsedJson['salary'],
-      distance: parsedJson['distance'],
+      name: jsonData['name'],
+      description: jsonData['description'],
+      photo: jsonData['photo'],
+      location: jsonData['location'],
+      profession: jsonData['profession'],
+      salary: jsonData['salary'],
+      distance: jsonData['distance'],
     );
   }
+
+  Map<String, dynamic> toJson() => {
+        "name": name,
+        "description": description,
+        "photo": photo,
+        "location": location,
+        "profession": profession,
+        "salary": salary,
+        "distance": distance,
+      };
 
   static Map<String, dynamic> toMap(ProfileData data) => {
         'name': data.name,

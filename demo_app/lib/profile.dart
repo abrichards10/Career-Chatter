@@ -72,7 +72,6 @@ class _ProfileState extends State<Profile> {
         child: Column(
           children: [
             Container(
-              color: Colors.amber,
               alignment: Alignment.centerRight,
               child: IconButton(
                 padding: EdgeInsets.zero,
@@ -302,17 +301,14 @@ class _InfoPopupState extends State<InfoPopup> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     return AlertDialog(
-      content: ListView.builder(
-        controller: scrollController,
-        itemCount: theseMsgs.length,
-        shrinkWrap: true,
-        reverse: true,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: screenWidth * .01,
-            ),
-            child: isTyping && index == 0
+      content: Container(
+        height: screenWidth * .5,
+        width: screenWidth * .4,
+        child: ListView.builder(
+          controller: scrollController,
+          itemCount: theseMsgs.length,
+          itemBuilder: (context, index) {
+            isTyping && index == 0
                 ? Column(
                     children: [
                       BubbleNormal(
@@ -340,9 +336,9 @@ class _InfoPopupState extends State<InfoPopup> {
                     text: theseMsgs[index].msg,
                     isSender: theseMsgs[index].isSender,
                     color: ui.Color.fromARGB(255, 189, 225, 190),
-                  ),
-          );
-        },
+                  );
+          },
+        ),
       ),
     );
   }

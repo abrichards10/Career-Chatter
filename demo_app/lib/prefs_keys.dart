@@ -1,10 +1,10 @@
 class PrefKeys {
-  static const String name = 'name';
-  static const String photo = 'photo';
-  static const String description = 'description';
-  static const String profession = 'profession';
-  static const String salary = 'salary';
-  static const String location = 'location';
-  static const String distance = 'distance';
-  static const String savedProfile = 'savedProfile';
+  static const String kname = 'name';
+  static const String kphoto = 'photo';
+  static const String kdescription = 'description';
+  static const String kprofession = 'profession';
+  static const String ksalary = 'salary';
+  static const String klocation = 'location';
+  static const String kdistance = 'distance';
+  static const String ksavedProfile = 'savedProfile';
 }

@@ -21,3 +21,5 @@ class SavedProfileEvent extends HomeEvent {
 }
 
 class RemoveProfileEvent extends HomeEvent {}
+
+class ReturnSavedProfile extends HomeEvent {}
