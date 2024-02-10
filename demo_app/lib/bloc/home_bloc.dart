@@ -34,16 +34,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       encodedList = ProfileData.decode(PrefsHelper().savedProfile);
     }
 
-    // print(
-    //   "name: ${event.name}, \ndescription: ${event.description},\nlocation: ${event.location} \nprofession: ${event.profession}, \nsalary: ${event.salary}, \ndistance: ${event.distance}, \nphoto: ${event.photo}",
-    // );
-
     if (event.name != null) {
       encodedList.insert(
         0,
         ProfileData(
           name: event.name,
-          description: "SUP", // event.description,
+          description: event.description,
           location: event.location,
           profession: event.profession,
           salary: event.salary.toString(),

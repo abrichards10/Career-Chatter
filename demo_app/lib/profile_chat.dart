@@ -16,7 +16,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:ui' as ui;
 import 'package:flutter_svg/flutter_svg.dart';
 
-class Profile extends StatefulWidget {
+class ProfileChat extends StatefulWidget {
   final String photo;
   final BuildContext context;
   final String name;
@@ -26,7 +26,7 @@ class Profile extends StatefulWidget {
   final int salary;
   final int distance;
 
-  const Profile({
+  const ProfileChat({
     super.key,
     required this.name,
     required this.description,
@@ -39,10 +39,10 @@ class Profile extends StatefulWidget {
   });
 
   @override
-  _ProfileState createState() => _ProfileState();
+  _ProfileChatState createState() => _ProfileChatState();
 }
 
-class _ProfileState extends State<Profile> {
+class _ProfileChatState extends State<ProfileChat> {
   TextEditingController controller = TextEditingController();
   List<Message> msgs = [];
   StreamSubscription? responseSubscription;
@@ -88,118 +88,34 @@ class _ProfileState extends State<Profile> {
                 },
               ),
             ),
-            Text(
-              'Hi! I\'m ${widget.name}',
+            Center(
+                child: Text(
+              '~${widget.name}~',
               style: TextStyle(
                 fontSize: screenWidth * .07,
                 height: 0,
                 fontWeight: FontWeight.bold,
               ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  width: screenWidth * .35,
-                  height: screenWidth * .35,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.blueGrey.withOpacity(0.5),
-                    border: Border.all(width: 3, color: Colors.teal),
-                  ),
-                  child: widget.photo == ""
-                      ? Container()
-                      : SvgPicture.string(
-                          widget.photo,
-                        ),
-                ),
-                Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(
-                        left: 20,
-                      ),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          context.read<HomeBloc>().add(
-                                SavedProfileEvent(
-                                  widget.name,
-                                  widget.photo,
-                                  "",
-                                  widget.profession,
-                                  widget.location,
-                                  widget.salary,
-                                  widget.distance,
-                                ),
-                              );
-                          Navigator.pop(context);
-                          // Navigator.pop(context);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => CareerChat(
-                                name: widget.name,
-                                photo: widget.photo,
-                                description: widget.description,
-                                profession: widget.profession,
-                                location: widget.location,
-                                salary: widget.salary,
-                                distance: widget.distance,
-                              ),
-                            ),
-                          );
-                        },
-                        child: Center(
-                          child: Text(
-                            'Chat',
-                            style: TextStyle(
-                              fontSize: screenWidth * .04,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                        left: 20,
-                      ),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: Center(
-                          child: Text(
-                            'Skip',
-                            style: TextStyle(
-                              fontSize: screenWidth * .04,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+            )),
             SizedBox(
               height: 20,
             ),
             Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                widget.description,
-                textAlign: TextAlign.start,
-                style: TextStyle(
-                  fontSize: screenWidth * .045,
-                ),
+              width: screenWidth * .35,
+              height: screenWidth * .35,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.blueGrey.withOpacity(0.5),
+                border: Border.all(width: 3, color: Colors.teal),
               ),
+              child: widget.photo == ""
+                  ? Container()
+                  : SvgPicture.string(
+                      widget.photo,
+                    ),
             ),
             SizedBox(
-              height: 10,
+              height: 20,
             ),
             Container(
               alignment: Alignment.centerLeft,

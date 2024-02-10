@@ -161,15 +161,16 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "${thisProfile.name.toString()}",
+            thisProfile.name.toString(),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
               fontSize: screenWidth * .04,
+              fontWeight: FontWeight.bold,
             ),
           ),
           Text(
-            "${thisProfile.profession.toString()}",
+            thisProfile.profession.toString(),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
@@ -215,7 +216,10 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
         appBar: AppBar(
             title: Text(
               'Career Chatbot',
-              style: TextStyle(fontSize: screenWidth * .07),
+              style: TextStyle(
+                fontSize: screenWidth * .07,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             actions: [
               IconButton(icon: Icon(Icons.menu), onPressed: () {}),
@@ -233,25 +237,6 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      GestureDetector(
-                        child: Container(
-                          height: screenWidth * .3,
-                          width: screenWidth * .3,
-                          child: Card(
-                            child: Text(
-                              "+",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: screenWidth * .2,
-                                height: 0,
-                              ),
-                            ),
-                          ),
-                        ),
-                        onTap: () {
-                          _showFilters();
-                        },
-                      ),
                       GestureDetector(
                         child: Container(
                           height: screenWidth * .3,
@@ -288,6 +273,7 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
                                     "Randomize!",
                                     style: TextStyle(
                                       fontSize: screenWidth * .045,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                 ],
@@ -330,109 +316,165 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
                           });
                         },
                       ),
+                      GestureDetector(
+                        child: Container(
+                          height: screenWidth * .3,
+                          width: screenWidth * .3,
+                          child: Card(
+                            child: Text(
+                              "+",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: screenWidth * .2,
+                                height: 0,
+                              ),
+                            ),
+                          ),
+                        ),
+                        onTap: () {
+                          _showFilters();
+                        },
+                      ),
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: screenWidth + 50,
-                  child: ListView.builder(
-                    itemCount: _profileList.length,
-                    itemBuilder: (context, index) {
-                      ProfileData thisProfile = _profileList[index];
+                Stack(
+                  children: [
+                    _profileList.isEmpty
+                        ? _defaultListView(screenWidth)
+                        : SizedBox(
+                            height: screenWidth + 50,
+                            child: ListView.builder(
+                              itemCount: _profileList.length,
+                              itemBuilder: (context, index) {
+                                ProfileData thisProfile = _profileList[index];
 
-                      return Container(
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: Colors.grey[300]!,
-                              width: 1.5,
-                            ),
-                          ),
-                        ),
-                        child: Dismissible(
-                          key: Key(thisProfile.name
-                              .toString()), // TODO: CHANGE TO ID
-                          confirmDismiss: (DismissDirection direction) async {
-                            return await showDialog<bool>(
-                              context: context,
-                              builder: (BuildContext context) =>
-                                  ProfileDataRemovePopup(
-                                profile: thisProfile,
-                                dismissed: true,
-                              ),
-                            );
-                          },
-                          onDismissed: (direction) {
-                            setState(() {
-                              context
-                                  .read<HomeBloc>()
-                                  .add(RemoveProfileEvent());
-                              _profileList.removeAt(index);
-                            });
-                          },
-                          background: Container(
-                            color: Colors.red,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Icon(Icons.delete,
-                                    color: Colors.white,
-                                    size: screenWidth * .1),
-                                SizedBox(width: screenWidth * .05),
-                              ],
-                            ),
-                          ),
-                          child: GestureDetector(
-                            onTap: () {
-                              currentSavedProfileInfoScreen = thisProfile.name;
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => CareerChat(
-                                    name: (thisProfile.name).toString(),
-                                    photo: thisProfile.photo,
-                                    description:
-                                        thisProfile.description.toString(),
-                                    profession:
-                                        thisProfile.profession.toString(),
-                                    salary: int.parse(
-                                        thisProfile.salary.toString()),
-                                    location: thisProfile.location.toString(),
-                                    distance: int.parse(
-                                        thisProfile.distance.toString()),
-                                  ),
-                                ),
-                              );
-                            },
-                            child: Padding(
-                              padding: EdgeInsets.fromLTRB(
-                                screenWidth * .02,
-                                screenWidth * .04,
-                                screenWidth * .02,
-                                screenWidth * .04,
-                              ),
-                              child: ListTile(
-                                title: Column(
-                                  children: [
-                                    _imageAndTextRow(
-                                      thisProfile,
-                                      screenWidth,
+                                return Container(
+                                  decoration: BoxDecoration(
+                                    border: Border(
+                                      bottom: BorderSide(
+                                        color: Colors.grey[300]!,
+                                        width: 1.5,
+                                      ),
                                     ),
-                                  ],
-                                ),
-                              ),
+                                  ),
+                                  child: Dismissible(
+                                    key: Key(thisProfile.name
+                                        .toString()), // TODO: CHANGE TO ID
+                                    confirmDismiss:
+                                        (DismissDirection direction) async {
+                                      return await showDialog<bool>(
+                                        context: context,
+                                        builder: (BuildContext context) =>
+                                            ProfileDataRemovePopup(
+                                          profile: thisProfile,
+                                          dismissed: true,
+                                        ),
+                                      );
+                                    },
+                                    onDismissed: (direction) {
+                                      setState(() {
+                                        context
+                                            .read<HomeBloc>()
+                                            .add(RemoveProfileEvent());
+                                        _profileList.removeAt(index);
+                                      });
+                                    },
+                                    background: Container(
+                                      color: Colors.red,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          Icon(Icons.delete,
+                                              color: Colors.white,
+                                              size: screenWidth * .1),
+                                          SizedBox(width: screenWidth * .05),
+                                        ],
+                                      ),
+                                    ),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        currentSavedProfileInfoScreen =
+                                            thisProfile.name;
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => CareerChat(
+                                              name:
+                                                  (thisProfile.name).toString(),
+                                              photo: thisProfile.photo,
+                                              description: thisProfile
+                                                  .description
+                                                  .toString(),
+                                              profession: thisProfile.profession
+                                                  .toString(),
+                                              salary: int.parse(thisProfile
+                                                  .salary
+                                                  .toString()),
+                                              location: thisProfile.location
+                                                  .toString(),
+                                              distance: int.parse(thisProfile
+                                                  .distance
+                                                  .toString()),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: Padding(
+                                        padding: EdgeInsets.fromLTRB(
+                                          screenWidth * .02,
+                                          screenWidth * .04,
+                                          screenWidth * .02,
+                                          screenWidth * .04,
+                                        ),
+                                        child: ListTile(
+                                          title: Column(
+                                            children: [
+                                              _imageAndTextRow(
+                                                thisProfile,
+                                                screenWidth,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
                           ),
-                        ),
-                      );
-                    },
-                  ),
+                  ],
                 ),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget _defaultListView(double screenWidth) {
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.fromLTRB(
+            screenWidth * .045,
+            screenWidth * .03,
+            screenWidth * .045,
+            0,
+          ),
+          child: Column(
+            children: [
+              Text(
+                'You have no conversations!\nTo add one, hit one of the buttons above ',
+                style: TextStyle(fontSize: screenWidth * .05),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
@@ -666,7 +708,7 @@ class _CareerFiltersState extends State<CareerFilters> {
                 });
               },
               child: Text(
-                'Generate Bot',
+                'Generate!',
                 style: TextStyle(
                   fontSize: screenWidth * .04,
                   fontWeight: FontWeight.bold,
