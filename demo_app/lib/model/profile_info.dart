@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:random_avatar/random_avatar.dart';
 
 class ProfileData {
@@ -23,17 +22,13 @@ class ProfileData {
 
   factory ProfileData.fromJson(Map<String, dynamic> parsedJson) {
     return ProfileData(
-      name: parsedJson['name'] ?? "Mohammed",
-      description: parsedJson['description'] ?? "No Description",
-      photo: parsedJson['name'] ??
-          RandomAvatarString(
-            DateTime.now().toIso8601String(),
-            trBackground: false,
-          ),
-      location: parsedJson['name'] ?? "San Francisco",
-      profession: parsedJson['name'] ?? "Software Engineer",
-      salary: parsedJson['name'] ?? "50000",
-      distance: parsedJson['name'] ?? "5",
+      name: parsedJson['name'],
+      description: parsedJson['description'],
+      photo: parsedJson['photo'],
+      location: parsedJson['location'],
+      profession: parsedJson['profession'],
+      salary: parsedJson['salary'],
+      distance: parsedJson['distance'],
     );
   }
 
@@ -47,11 +42,11 @@ class ProfileData {
         'distance': data.distance,
       };
 
-  static String encode(List<ProfileData> savedDataList) => json.encode(
-        savedDataList
+  static String encode(List<ProfileData> profileDataList) => json.encode(
+        profileDataList
             .map<Map<String, dynamic>>((data) => ProfileData.toMap(data))
             .toList(),
-        toEncodable: (savedDataList) => savedDataList,
+        toEncodable: (profileDataList) => profileDataList,
       );
 
   static List<ProfileData> decode(String savedProfileString) =>

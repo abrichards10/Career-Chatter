@@ -13,12 +13,12 @@ import 'package:prefs/prefs.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Prefs.init();
+  // await Prefs.remove(PrefKeys.savedProfile);
+
   OpenAI.apiKey = OpenAiKey;
   OpenAI.requestsTimeOut =
       const Duration(seconds: 60); // 60 seconds before request times out
   ChatGPTCompletions.instance.initialize(apiKey: OpenAiKey);
-  await Prefs.init();
-
   runApp(const MyApp());
 }
 

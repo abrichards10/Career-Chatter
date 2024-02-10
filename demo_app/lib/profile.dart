@@ -93,13 +93,17 @@ class _ProfileState extends State<Profile> {
                                 ),
                               );
                           Navigator.pop(context);
-                          Navigator.pop(context);
+                          // Navigator.pop(context);
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => CareerChat(
                                 name: widget.name,
                                 photo: widget.photo,
+                                profession: widget.profession,
+                                location: widget.location,
+                                salary: widget.salary,
+                                distance: widget.distance,
                               ),
                             ),
                           );
@@ -136,23 +140,37 @@ class _ProfileState extends State<Profile> {
                 ),
               ],
             ),
-            const SizedBox(height: 16.0),
             Text(widget.description.toString()),
-            const SizedBox(height: 10.0),
             Container(
               alignment: Alignment.centerLeft,
               child: Text(
                 'Profession: ${widget.profession}',
                 textAlign: TextAlign.start,
+                style: TextStyle(
+                  fontSize: screenWidth * .045,
+                  height: 2,
+                ),
               ),
             ),
             Container(
               alignment: Alignment.centerLeft,
-              child: Text('Salary: ${widget.salary}'),
+              child: Text(
+                'Salary: ${widget.salary}',
+                style: TextStyle(
+                  fontSize: screenWidth * .045,
+                  height: 2,
+                ),
+              ),
             ),
             Container(
               alignment: Alignment.centerLeft,
-              child: Text('Location: ${widget.location}'),
+              child: Text(
+                'Location: ${widget.location}',
+                style: TextStyle(
+                  fontSize: screenWidth * .045,
+                  height: 2,
+                ),
+              ),
             ),
           ],
         ),

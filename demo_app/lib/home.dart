@@ -32,7 +32,8 @@ class CareerChatbotPage extends StatefulWidget {
 class _CareerChatbotPageState extends State<CareerChatbotPage> {
   List<String> _response = [];
   String? currentHeadshot = "";
-  var randomNames = RandomNames(Zone.us);
+  var randomNames =
+      RandomNames(Zone.us); // TODO: change for inclusive language regions
 
   final _random = new Random();
 
@@ -42,8 +43,11 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
       trBackground: false,
     ),
   );
+
   List<ProfileData> _profileList = [];
-  String? currentSavedDishInfoScreen = "";
+  // List<ProfileData> savedDataList = [];
+
+  String? currentSavedProfileInfoScreen = "";
   bool thereIsError = false;
 
   StreamSubscription? responseSubscription;
@@ -99,11 +103,10 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
 
   @override
   void initState() {
-    if (PrefsHelper().name != "") {
-      print("profileList::: $_profileList");
-      _profileList = ProfileData.decode(PrefsHelper().savedProfile);
-    }
-    _profileList.addAll(_profileList);
+    // if (PrefsHelper().name != "") {
+    //   savedDataList = ProfileData.decode(PrefsHelper().savedProfile);
+    // }
+    // _profileList.addAll(savedDataList);
 
     super.initState();
   }
@@ -113,8 +116,7 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
     super.dispose();
   }
 
-  Widget _imageAndTextRow(ProfileData profile, double screenWidth) {
-    print("${profile.photo}");
+  Widget _imageAndTextRow(ProfileData thisProfile, double screenWidth) {
     return Container(
       padding: EdgeInsets.fromLTRB(
         0,
@@ -136,16 +138,16 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
               ),
             ),
             child: SvgPicture.string(
-              profile.photo,
+              thisProfile.photo,
             ), // Container(),
           ),
-          _textColumn(profile, screenWidth),
+          _textColumn(thisProfile, screenWidth),
         ],
       ),
     );
   }
 
-  Widget _textColumn(ProfileData profile, double screenWidth) {
+  Widget _textColumn(ProfileData thisProfile, double screenWidth) {
     return Container(
       width: screenWidth - 200,
       padding: EdgeInsets.fromLTRB(
@@ -159,7 +161,7 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "${profile.name.toString()}",
+            "${thisProfile.name.toString()}",
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
@@ -167,7 +169,7 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
             ),
           ),
           Text(
-            "${profile.profession.toString()}",
+            "${thisProfile.profession.toString()}",
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
@@ -182,8 +184,7 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
   _dishDisplayBlocListener(BuildContext context, HomeState state) {
     if (state is SavedProfileState) {
       print("SAVED");
-      _profileList.addAll(state.data);
-      print("lIST: $_profileList");
+      _profileList = state.data;
       PrefsHelper().savedProfile = ProfileData.encode(state.data);
       setState(() {});
     }
@@ -195,9 +196,14 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
     return BlocListener<HomeBloc, HomeState>(
       listener: _dishDisplayBlocListener,
       child: Scaffold(
-        appBar: AppBar(title: const Text('Career Chatbot'), actions: [
-          IconButton(icon: Icon(Icons.menu), onPressed: () {}),
-        ]),
+        appBar: AppBar(
+            title: Text(
+              'Career Chatbot',
+              style: TextStyle(fontSize: screenWidth * .07),
+            ),
+            actions: [
+              IconButton(icon: Icon(Icons.menu), onPressed: () {}),
+            ]),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -249,7 +255,7 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
                                     shape: BoxShape.circle,
                                     color: Colors.blueGrey.withOpacity(0.5),
                                     border: Border.all(
-                                      width: 3,
+                                      width: 1,
                                       color: Colors.transparent,
                                     ),
                                   ),
@@ -257,7 +263,7 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
                                     borderRadius: BorderRadius.circular(20),
                                     child: Image(
                                       image: AssetImage(
-                                          "assets/random_profile.jpg"),
+                                          "assets/blank_profile.png"),
                                     ),
                                   ),
                                 ),
@@ -266,7 +272,9 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
                                 ),
                                 Text(
                                   "Randomize!",
-                                  style: TextStyle(fontSize: screenWidth * .05),
+                                  style: TextStyle(
+                                    fontSize: screenWidth * .045,
+                                  ),
                                 ),
                               ],
                             ),
@@ -274,27 +282,29 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
                         ),
                       ),
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Profile(
-                              name: randomNames.name(),
-                              photo: RandomAvatarString(
-                                DateTime.now().toIso8601String(),
-                                trBackground: false,
-                              ),
-                              description: '',
-                              context: context,
-                              profession: professions[
-                                  _random.nextInt(professions.length)],
-                              location:
-                                  locations[_random.nextInt(locations.length)],
-                              salary: _random.nextInt(400000) +
-                                  15000, // TODO: change to calculated
-                              distance: _random.nextInt(50),
-                            ),
-                          ),
-                        );
+                        setState(() {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return Profile(
+                                name: randomNames.name(),
+                                photo: RandomAvatarString(
+                                  DateTime.now().toIso8601String(),
+                                  trBackground: false,
+                                ),
+                                description: '',
+                                context: context,
+                                profession: professions[
+                                    _random.nextInt(professions.length)],
+                                location: locations[
+                                    _random.nextInt(locations.length)],
+                                salary: _random.nextInt(400000) +
+                                    15000, // TODO: change to calculated
+                                distance: PrefsHelper().distance,
+                              );
+                            },
+                          );
+                        });
                       },
                     ),
                   ],
@@ -304,7 +314,7 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
                   child: ListView.builder(
                     itemCount: _profileList.length,
                     itemBuilder: (context, index) {
-                      profile = _profileList[index];
+                      ProfileData thisProfile = _profileList[index];
 
                       return Container(
                         decoration: BoxDecoration(
@@ -316,14 +326,14 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
                           ),
                         ),
                         child: Dismissible(
-                          key: Key(
-                              profile.name.toString()), // TODO: CHANGE TO ID
+                          key: Key(thisProfile.name
+                              .toString()), // TODO: CHANGE TO ID
                           confirmDismiss: (DismissDirection direction) async {
                             return await showDialog<bool>(
                               context: context,
                               builder: (BuildContext context) =>
                                   ProfileDataRemovePopup(
-                                profile: profile,
+                                profile: thisProfile,
                                 dismissed: true,
                               ),
                             );
@@ -331,8 +341,9 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
                           onDismissed: (direction) {
                             setState(() {
                               _profileList.removeWhere((element) =>
-                                  element.name == currentSavedDishInfoScreen);
-                              currentSavedDishInfoScreen == "";
+                                  element.name ==
+                                  currentSavedProfileInfoScreen);
+                              currentSavedProfileInfoScreen == "";
                               PrefsHelper().savedProfile =
                                   ProfileData.encode(_profileList);
                               _profileList.removeAt(index);
@@ -352,13 +363,20 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
                           ),
                           child: GestureDetector(
                             onTap: () {
-                              currentSavedDishInfoScreen = profile.name;
+                              currentSavedProfileInfoScreen = thisProfile.name;
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => CareerChat(
-                                    name: (profile.name).toString(),
-                                    photo: profile.photo,
+                                    name: (thisProfile.name).toString(),
+                                    photo: thisProfile.photo,
+                                    profession:
+                                        thisProfile.profession.toString(),
+                                    salary: int.parse(
+                                        thisProfile.salary.toString()),
+                                    location: thisProfile.location.toString(),
+                                    distance: int.parse(
+                                        thisProfile.distance.toString()),
                                   ),
                                 ),
                               );
@@ -374,7 +392,7 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
                                 title: Column(
                                   children: [
                                     _imageAndTextRow(
-                                      profile,
+                                      thisProfile,
                                       screenWidth,
                                     ),
                                   ],
@@ -429,186 +447,199 @@ class _CareerFiltersState extends State<CareerFilters> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     return AlertDialog(
-      actions: [
-        Container(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            "Profession",
-            style: TextStyle(
-              fontSize: screenWidth * .05,
-              height: 3,
-            ),
-          ),
-        ),
-        DropdownSearch<String>(
-          items: professions,
-          popupProps: PopupProps.menu(
-            showSearchBox: true,
-          ),
-          dropdownDecoratorProps: DropDownDecoratorProps(
-            textAlignVertical: TextAlignVertical.center,
-            dropdownSearchDecoration: InputDecoration(
-                border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20),
-            )),
-          ),
-          onChanged: (value) {
-            setState(() {
-              PrefsHelper().profession = value.toString();
-            });
+      actions: <Widget>[
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context, _salary);
+            Navigator.pop(context, _distance);
           },
-          selectedItem: PrefsHelper().profession,
-        ),
-        Container(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            "Location",
-            style: TextStyle(
-              fontSize: screenWidth * .05,
-              height: 3,
-            ),
+          child: Container(
+            height: 0,
           ),
-        ),
-        DropdownSearch<String>(
-          items: locations,
-          popupProps: PopupProps.menu(
-            showSearchBox: true,
-          ),
-          dropdownDecoratorProps: DropDownDecoratorProps(
-            textAlignVertical: TextAlignVertical.center,
-            dropdownSearchDecoration: InputDecoration(
-                border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20),
-            )),
-          ),
-          onChanged: (value) {
-            setState(() {
-              PrefsHelper().location = value.toString();
-            });
-          },
-          selectedItem: PrefsHelper().location,
-        ),
-        SizedBox(
-          height: 20,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              "Minimum Salary",
+        )
+      ],
+      content: Column(
+        children: [
+          Container(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              "Profession",
               style: TextStyle(
                 fontSize: screenWidth * .05,
                 height: 3,
               ),
             ),
-            Text(
-              "\$${PrefsHelper().salary}   ",
-              style: TextStyle(
-                fontSize: screenWidth * .04,
-              ),
-            ),
-          ],
-        ),
-        SliderTheme(
-          data: SliderTheme.of(context).copyWith(
-            overlayShape: SliderComponentShape.noOverlay,
           ),
-          child: SizedBox(
-            width: screenWidth * 2,
-            child: Slider(
-              min: 0,
-              max: 400000,
-              divisions: 100,
-              value: _salary,
-              label: PrefsHelper().salary.toString(),
-              onChanged: (value) {
-                setState(() {
-                  _salary = value;
-                  PrefsHelper().salary = _salary.toInt();
-                });
-              },
+          DropdownSearch<String>(
+            items: professions,
+            popupProps: PopupProps.menu(
+              showSearchBox: true,
             ),
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              "Distance",
-              style: TextStyle(
-                fontSize: screenWidth * .05,
-                height: 3,
-              ),
+            dropdownDecoratorProps: DropDownDecoratorProps(
+              textAlignVertical: TextAlignVertical.center,
+              dropdownSearchDecoration: InputDecoration(
+                  border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20),
+              )),
             ),
-            Text(
-              "${PrefsHelper().distance} mi  ",
-              style: TextStyle(
-                fontSize: screenWidth * .04,
-              ),
-            ),
-          ],
-        ),
-        SliderTheme(
-          data: SliderTheme.of(context).copyWith(
-            overlayShape: SliderComponentShape.noOverlay,
-          ),
-          child: SizedBox(
-            width: screenWidth * 2,
-            child: Slider(
-              value: _distance,
-              max: 100,
-              divisions: 100,
-              label: PrefsHelper().distance.toString(),
-              onChanged: (double value) {
-                setState(() {
-                  _distance = value;
-                  PrefsHelper().distance = _distance.toInt();
-                });
-              },
-            ),
-          ),
-        ),
-        const SizedBox(
-          height: 16.0,
-        ),
-        Container(
-          alignment: Alignment.center,
-          child: ElevatedButton(
-            onPressed: () {
+            onChanged: (value) {
               setState(() {
-                // sendMsg(
-                //     "what is the range of the average salary of an artist located in grass valley, ca - just give me the numbers");
-
-                String photo = RandomAvatarString(
-                  DateTime.now().toIso8601String(),
-                  trBackground: false,
-                );
-
-                String name = randomNames.name();
-                String description =
-                    'Hi! I\'m $name and I am a ${PrefsHelper().profession}.  I make \$${PrefsHelper().salary} per year and I live in ${PrefsHelper().location}';
-
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return Profile(
-                      name: name,
-                      description: description,
-                      photo: photo,
-                      context: context,
-                      profession: PrefsHelper().profession,
-                      location: PrefsHelper().location,
-                      salary: PrefsHelper().salary,
-                      distance: PrefsHelper().distance,
-                    );
-                  },
-                );
+                PrefsHelper().profession = value.toString();
               });
             },
-            child: const Text('Generate Bot'),
+            selectedItem: PrefsHelper().profession,
           ),
-        ),
-      ],
+          Container(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              "Location",
+              style: TextStyle(
+                fontSize: screenWidth * .05,
+                height: 3,
+              ),
+            ),
+          ),
+          DropdownSearch<String>(
+            items: locations,
+            popupProps: PopupProps.menu(
+              showSearchBox: true,
+            ),
+            dropdownDecoratorProps: DropDownDecoratorProps(
+              textAlignVertical: TextAlignVertical.center,
+              dropdownSearchDecoration: InputDecoration(
+                  border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20),
+              )),
+            ),
+            onChanged: (value) {
+              setState(() {
+                PrefsHelper().location = value.toString();
+              });
+            },
+            selectedItem: PrefsHelper().location,
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Minimum Salary",
+                style: TextStyle(
+                  fontSize: screenWidth * .05,
+                  height: 3,
+                ),
+              ),
+              Text(
+                "\$${PrefsHelper().salary}   ",
+                style: TextStyle(
+                  fontSize: screenWidth * .04,
+                ),
+              ),
+            ],
+          ),
+          SliderTheme(
+            data: SliderTheme.of(context).copyWith(
+              overlayShape: SliderComponentShape.noOverlay,
+            ),
+            child: SizedBox(
+              width: screenWidth * 2,
+              child: Slider(
+                min: 0,
+                max: 400000,
+                divisions: 100,
+                value: _salary,
+                label: PrefsHelper().salary.toString(),
+                onChanged: (value) {
+                  setState(() {
+                    _salary = value;
+                    PrefsHelper().salary = _salary.toInt();
+                  });
+                },
+              ),
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Distance",
+                style: TextStyle(
+                  fontSize: screenWidth * .05,
+                  height: 3,
+                ),
+              ),
+              Text(
+                "${PrefsHelper().distance} mi  ",
+                style: TextStyle(
+                  fontSize: screenWidth * .04,
+                ),
+              ),
+            ],
+          ),
+          SliderTheme(
+            data: SliderTheme.of(context).copyWith(
+              overlayShape: SliderComponentShape.noOverlay,
+            ),
+            child: SizedBox(
+              width: screenWidth * 2,
+              child: Slider(
+                value: _distance,
+                max: 100,
+                divisions: 100,
+                label: PrefsHelper().distance.toString(),
+                onChanged: (double value) {
+                  setState(() {
+                    _distance = value;
+                    PrefsHelper().distance = _distance.toInt();
+                  });
+                },
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 16.0,
+          ),
+          Container(
+            alignment: Alignment.center,
+            child: ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  // sendMsg(
+                  //     "what is the range of the average salary of an artist located in grass valley, ca - just give me the numbers");
+
+                  String photo = RandomAvatarString(
+                    DateTime.now().toIso8601String(),
+                    trBackground: false,
+                  );
+
+                  String name = randomNames.name();
+                  String description =
+                      'Hi! I\'m $name and I am a ${PrefsHelper().profession}.  I make \$${PrefsHelper().salary} per year and I live in ${PrefsHelper().location}';
+
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Profile(
+                        name: name,
+                        description: description,
+                        photo: photo,
+                        context: context,
+                        profession: PrefsHelper().profession,
+                        location: PrefsHelper().location,
+                        salary: PrefsHelper().salary,
+                        distance: PrefsHelper().distance,
+                      );
+                    },
+                  );
+                });
+              },
+              child: const Text('Generate Bot'),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

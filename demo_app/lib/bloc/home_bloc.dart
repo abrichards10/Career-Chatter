@@ -20,37 +20,43 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   Future<void> savedProfileMethod(
       SavedProfileEvent event, Emitter<HomeState> emit) async {
     if (PrefsHelper().savedProfile != "") {
+      print("TRIED TO DECODE");
       encodedList = ProfileData.decode(PrefsHelper().savedProfile);
     }
 
     print(
-      "name: ${event.name}, \ndescription: ${event.description},\nphoto: ${event.photo},\nlocation: ${event.location} \nprofession: ${event.profession}, \nsalary: ${event.salary}, \ndistance: ${event.distance}",
+      "name: ${event.name}, \ndescription: ${event.description},\nlocation: ${event.location} \nprofession: ${event.profession}, \nsalary: ${event.salary}, \ndistance: ${event.distance}",
     );
+    if (event.name != null) {
+      encodedList.insert(
+        0,
+        ProfileData(
+          name: event.name,
+          description: event.description,
+          location: event.location,
+          profession: event.profession,
+          salary: event.salary.toString(),
+          distance: event.distance.toString(),
+          photo: event.photo,
+        ),
+      );
 
-    encodedList.insert(
-      0,
-      ProfileData(
-        name: event.name,
-        description: event.description,
-        photo: event.photo,
-        location: event.location,
-        profession: event.profession,
-        salary: event.salary.toString(),
-        distance: event.distance.toString(),
-      ),
-    );
+      PrefsHelper().savedProfile = ProfileData.encode(encodedList);
 
-    // print("Encoded AFTER: ${encodedList.first.name}");
+      print("Encoded AFTER: ENCODE${PrefsHelper().savedProfile}");
 
-    // PrefsHelper().savedProfile = ProfileData.encode(encodedList);
+      List<ProfileData> savedProfileList =
+          ProfileData.decode(PrefsHelper().savedProfile);
 
-    // print("Encoded AFTER: ENCODE${PrefsHelper().savedProfile}");
+      print("Saved profile list: ${savedProfileList.last.name}");
+      print("Saved profile list: ${savedProfileList.last.distance}");
+      print("Saved profile list: ${savedProfileList.last.salary}");
 
-    // List<ProfileData> savedProfileList =
-    //     ProfileData.decode(PrefsHelper().savedProfile);
+      print("Saved profile list: ${savedProfileList.first.name}");
+      print("Saved profile list: ${savedProfileList.first.distance}");
+      print("Saved profile list: ${savedProfileList.first.salary}");
 
-    // print("Saved profile list: $savedProfileList");
-
-    emit(SavedProfileState(encodedList));
+      emit(SavedProfileState(encodedList));
+    }
   }
 }

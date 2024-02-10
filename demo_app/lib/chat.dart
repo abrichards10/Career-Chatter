@@ -13,8 +13,19 @@ import 'package:flutter_svg/flutter_svg.dart';
 class CareerChat extends StatefulWidget {
   final String name;
   final String photo;
+  final String profession;
+  final String location;
+  final int salary;
+  final int distance;
 
-  CareerChat({required this.name, required this.photo});
+  CareerChat({
+    required this.name,
+    required this.photo,
+    required this.profession,
+    required this.location,
+    required this.salary,
+    required this.distance,
+  });
 
   @override
   State<CareerChat> createState() => _CareerChatState();
@@ -65,8 +76,14 @@ class _CareerChatState extends State<CareerChat> {
 
   @override
   void initState() {
-    // sendMsg("Hi!");
+    // sendMsg(
+    //     "Hi! Pretend you are ${widget.name} and you live in ${widget.location} working as a ${widget.profession} making ${widget.salary} dollars per year. You live ${widget.distance} miles away from ${widget.location}? Say hi");
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -158,6 +175,7 @@ class _CareerChatState extends State<CareerChat> {
                       : BubbleNormal(
                           text: msgs[index].msg,
                           isSender: msgs[index].isSender,
+                          color: ui.Color.fromARGB(255, 189, 225, 190),
                         ),
                 );
               },
@@ -166,7 +184,7 @@ class _CareerChatState extends State<CareerChat> {
           Padding(
             padding: EdgeInsets.fromLTRB(
               screenWidth * .04,
-              screenWidth * .1,
+              screenWidth * .01,
               screenWidth * .04,
               screenWidth * .04,
             ),
@@ -202,7 +220,7 @@ class _CareerChatState extends State<CareerChat> {
                     ),
                     onTap: () {
                       sendMsg(
-                          "What skills are most important for success in this field?");
+                          "Pretend you are ${widget.name} and you live in ${widget.location} working as a ${widget.profession} making ${widget.salary} dollars per year. You live ${widget.distance} miles away from ${widget.location}. What skills are most important for success in this field?");
                     },
                   ),
                   GestureDetector(
@@ -233,7 +251,7 @@ class _CareerChatState extends State<CareerChat> {
                     ),
                     onTap: () {
                       sendMsg(
-                        "How do you handle difficult situations or conflicts at work?",
+                        "Pretend you are ${widget.name} and you live in ${widget.location} working as a ${widget.profession} making ${widget.salary} dollars per year. You live ${widget.distance} miles away from ${widget.location}. How do you handle difficult situations or conflicts at work?",
                       );
                     },
                   ),
@@ -265,7 +283,7 @@ class _CareerChatState extends State<CareerChat> {
                     ),
                     onTap: () {
                       sendMsg(
-                        "Can you describe a typical day in your job?",
+                        "Pretend you are ${widget.name} and you live in ${widget.location} working as a ${widget.profession} making ${widget.salary} dollars per year. You live ${widget.distance} miles away from ${widget.location}. Can you describe a typical day in your job?",
                       );
                     },
                   ),
@@ -297,7 +315,7 @@ class _CareerChatState extends State<CareerChat> {
                     ),
                     onTap: () {
                       sendMsg(
-                        "How do you handle work-life balance in this career?",
+                        "Pretend you are ${widget.name} and you live in ${widget.location} working as a ${widget.profession} making ${widget.salary} dollars per year. You live ${widget.distance} miles away from ${widget.location}. How do you handle work-life balance in this career?",
                       );
                     },
                   ),
