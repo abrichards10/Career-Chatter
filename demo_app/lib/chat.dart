@@ -13,6 +13,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 class CareerChat extends StatefulWidget {
   final String name;
   final String photo;
+  final String description;
   final String profession;
   final String location;
   final int salary;
@@ -21,6 +22,7 @@ class CareerChat extends StatefulWidget {
   CareerChat({
     required this.name,
     required this.photo,
+    required this.description,
     required this.profession,
     required this.location,
     required this.salary,
@@ -101,34 +103,53 @@ class _CareerChatState extends State<CareerChat> {
             Navigator.pop(context);
           },
         ),
-        title: Row(
-          children: [
-            Container(
-              height: screenWidth * .1,
-              width: screenWidth * .1,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.blueGrey.withOpacity(0.5),
-                border: Border.all(width: 3, color: Colors.teal),
+        title: GestureDetector(
+          child: Row(
+            children: [
+              Container(
+                height: screenWidth * .1,
+                width: screenWidth * .1,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.blueGrey.withOpacity(0.5),
+                  border: Border.all(width: 3, color: Colors.teal),
+                ),
+                child: widget.photo == ""
+                    ? Container()
+                    : SvgPicture.string(
+                        widget.photo,
+                      ),
               ),
-              child: widget.photo == ""
-                  ? Container()
-                  : SvgPicture.string(
-                      widget.photo,
-                    ),
-            ),
-            SizedBox(
-              width: 15,
-            ),
-            Text(
-              widget.name,
-              style: TextStyle(
-                fontFamily: mainFont.fontFamily,
-                fontWeight: FontWeight.bold,
-                fontSize: screenWidth * .07,
+              SizedBox(
+                width: 15,
               ),
-            ),
-          ],
+              Text(
+                widget.name,
+                style: TextStyle(
+                  fontFamily: mainFont.fontFamily,
+                  fontWeight: FontWeight.bold,
+                  fontSize: screenWidth * .07,
+                ),
+              ),
+            ],
+          ),
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return Profile(
+                  name: widget.name,
+                  description: widget.description,
+                  photo: widget.photo,
+                  context: context,
+                  profession: widget.profession,
+                  location: widget.location,
+                  salary: widget.salary,
+                  distance: widget.distance,
+                );
+              },
+            );
+          },
         ),
       ),
       body: Column(

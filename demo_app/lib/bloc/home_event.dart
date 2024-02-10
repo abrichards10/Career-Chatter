@@ -19,3 +19,5 @@ class SavedProfileEvent extends HomeEvent {
     this.distance,
   );
 }
+
+class RemoveProfileEvent extends HomeEvent {}

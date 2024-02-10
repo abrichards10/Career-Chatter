@@ -7,6 +7,7 @@ import 'dart:ui' as ui;
 
 import 'package:chatgpt_completions/chatgpt_completions.dart';
 import 'package:demo_app/bloc/home_bloc.dart';
+import 'package:demo_app/bloc/home_event.dart';
 import 'package:demo_app/bloc/home_state.dart';
 import 'package:demo_app/chat.dart';
 import 'package:demo_app/design.dart';
@@ -103,9 +104,9 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
 
   @override
   void initState() {
-    // if (PrefsHelper().name != "") {
-    //   savedDataList = ProfileData.decode(PrefsHelper().savedProfile);
-    // }
+    if (_profileList.isNotEmpty) {
+      _profileList = ProfileData.decode(PrefsHelper().savedProfile);
+    }
     // _profileList.addAll(savedDataList);
 
     super.initState();
@@ -165,7 +166,7 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
-              fontSize: screenWidth * .038,
+              fontSize: screenWidth * .04,
             ),
           ),
           Text(
@@ -173,7 +174,7 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
-              fontSize: screenWidth * .034,
+              fontSize: screenWidth * .04,
             ),
           ),
         ],
@@ -186,6 +187,14 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
       print("SAVED");
       _profileList = state.data;
       PrefsHelper().savedProfile = ProfileData.encode(state.data);
+      setState(() {});
+    }
+    if (state is RemoveProfileState) {
+      print("GOT TO INNERRRR ");
+      _profileList.removeWhere(
+          (element) => element.name == currentSavedProfileInfoScreen);
+      currentSavedProfileInfoScreen == "";
+      PrefsHelper().savedProfile = ProfileData.encode(_profileList);
       setState(() {});
     }
   }
@@ -283,24 +292,33 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
                       ),
                       onTap: () {
                         setState(() {
+                          String randomName = randomNames.name();
+                          String thisProfession =
+                              professions[_random.nextInt(professions.length)];
+                          String thisLocation =
+                              locations[_random.nextInt(locations.length)];
+                          int thisSalary = _random.nextInt(400000) +
+                              15000; // TODO: change to calculated;
+                          int thisDistance = _random.nextInt(25);
+
+                          String thisDescription =
+                              'Hi! I\'m $randomName and I am a $thisProfession.  I make \$$thisSalary per year and I live in $thisLocation';
+
                           showDialog(
                             context: context,
                             builder: (context) {
                               return Profile(
-                                name: randomNames.name(),
+                                name: randomName,
                                 photo: RandomAvatarString(
                                   DateTime.now().toIso8601String(),
                                   trBackground: false,
                                 ),
-                                description: '',
+                                description: thisDescription,
                                 context: context,
-                                profession: professions[
-                                    _random.nextInt(professions.length)],
-                                location: locations[
-                                    _random.nextInt(locations.length)],
-                                salary: _random.nextInt(400000) +
-                                    15000, // TODO: change to calculated
-                                distance: PrefsHelper().distance,
+                                profession: thisProfession,
+                                location: thisLocation,
+                                salary: thisSalary,
+                                distance: thisDistance,
                               );
                             },
                           );
@@ -340,13 +358,11 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
                           },
                           onDismissed: (direction) {
                             setState(() {
-                              _profileList.removeWhere((element) =>
-                                  element.name ==
-                                  currentSavedProfileInfoScreen);
-                              currentSavedProfileInfoScreen == "";
-                              PrefsHelper().savedProfile =
-                                  ProfileData.encode(_profileList);
+                              context
+                                  .read<HomeBloc>()
+                                  .add(RemoveProfileEvent());
                               _profileList.removeAt(index);
+                           
                             });
                           },
                           background: Container(
@@ -370,6 +386,8 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
                                   builder: (context) => CareerChat(
                                     name: (thisProfile.name).toString(),
                                     photo: thisProfile.photo,
+                                    description:
+                                        thisProfile.description.toString(),
                                     profession:
                                         thisProfile.profession.toString(),
                                     salary: int.parse(

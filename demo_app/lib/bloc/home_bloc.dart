@@ -15,6 +15,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   _handleEvents() {
     on<SavedProfileEvent>(savedProfileMethod);
+    on<RemoveProfileEvent>(removeProfileMethod);
   }
 
   Future<void> savedProfileMethod(
@@ -58,5 +59,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
       emit(SavedProfileState(encodedList));
     }
+  }
+
+  Future<void> removeProfileMethod(
+      RemoveProfileEvent event, Emitter<HomeState> emit) async {
+    print("INNER REMOVE STATE");
+    emit(RemoveProfileState());
   }
 }
