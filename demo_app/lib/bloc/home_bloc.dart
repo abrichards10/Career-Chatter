@@ -4,7 +4,7 @@ import 'package:demo_app/api_service.dart';
 import 'package:demo_app/bloc/home_event.dart';
 import 'package:demo_app/bloc/home_state.dart';
 import 'package:demo_app/model/profile_info.dart';
-import 'package:demo_app/shared_prefs.dart';
+import 'package:demo_app/prefs/shared_prefs.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {

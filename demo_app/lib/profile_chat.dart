@@ -1,18 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:async';
-import 'dart:typed_data';
-
 import 'package:chat_bubbles/bubbles/bubble_normal.dart';
 import 'package:chatgpt_completions/chatgpt_completions.dart';
-import 'package:demo_app/bloc/home_bloc.dart';
-import 'package:demo_app/bloc/home_event.dart';
-import 'package:demo_app/chat.dart';
 import 'package:demo_app/model/message.dart';
-import 'package:demo_app/model/profile_info.dart';
-import 'package:demo_app/shared_prefs.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:ui' as ui;
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -64,7 +56,7 @@ class _ProfileChatState extends State<ProfileChat> {
                 constraints: BoxConstraints(),
                 icon: Icon(
                   Icons.info_outline,
-                  size: screenWidth * .05,
+                  size: screenWidth * .06,
                 ),
                 onPressed: () {
                   setState(

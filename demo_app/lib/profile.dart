@@ -10,7 +10,7 @@ import 'package:demo_app/bloc/home_event.dart';
 import 'package:demo_app/chat.dart';
 import 'package:demo_app/model/message.dart';
 import 'package:demo_app/model/profile_info.dart';
-import 'package:demo_app/shared_prefs.dart';
+import 'package:demo_app/prefs/shared_prefs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:ui' as ui;
@@ -58,37 +58,37 @@ class _ProfileState extends State<Profile> {
       content: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              padding: const EdgeInsets.all(0.0),
-              alignment: Alignment.centerRight,
-              child: IconButton(
-                padding: EdgeInsets.zero,
-                constraints: BoxConstraints(),
-                icon: Icon(
-                  Icons.info_outline,
-                  size: screenWidth * .05,
-                ),
-                onPressed: () {
-                  setState(
-                    () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            content: Text("HELLo"),
-                          );
-                        },
-                      );
-                    },
-                  );
-                },
-              ),
-            ),
+            // Container(
+            //   padding: const EdgeInsets.all(0.0),
+            //   alignment: Alignment.centerRight,
+            //   child: IconButton(
+            //     padding: EdgeInsets.zero,
+            //     constraints: BoxConstraints(),
+            //     icon: Icon(
+            //       Icons.info_outline,
+            //       size: screenWidth * .05,
+            //     ),
+            //     onPressed: () {
+            //       setState(
+            //         () {
+            //           showDialog(
+            //             context: context,
+            //             builder: (context) {
+            //               return AlertDialog(
+            //                 content: Text("HELLo"),
+            //               );
+            //             },
+            //           );
+            //         },
+            //       );
+            //     },
+            //   ),
+            // ),
             Text(
               'Hi! I\'m ${widget.name}',
               style: TextStyle(
                 fontSize: screenWidth * .07,
-                height: 0,
+                height: 3,
                 fontWeight: FontWeight.bold,
               ),
             ),

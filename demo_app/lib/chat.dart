@@ -56,8 +56,17 @@ class _CareerChatState extends State<CareerChat> {
   late Color starColor;
 
   String careerPrompt = "";
-  void sendMsg(String command) async {
+  void sendMsg(String command, String displayMessage) async {
     controller.clear();
+
+    setState(
+      () {
+        msgs.insert(0, Message(true, displayMessage));
+        isTyping = true;
+      },
+    );
+    scrollController.animateTo(0.0,
+        duration: const Duration(seconds: 1), curve: Curves.easeOut);
 
     ChatGPTCompletions.instance.textCompletions(
       TextCompletionsParams(
@@ -70,15 +79,31 @@ class _CareerChatState extends State<CareerChat> {
         model: GPTModel.gpt3p5turbo,
       ),
       onStreamValue: (characters) {
-        msgs.clear();
+        setState(
+          () {
+            msgs.clear();
 
-        msgs.insert(
-          0,
-          Message(
-            false,
-            characters,
-          ),
+            isTyping = false;
+            msgs.insert(
+              0,
+              Message(
+                false,
+                characters,
+              ),
+            );
+
+            prevResponse = msgs[0].msg;
+          },
         );
+        // msgs.clear();
+
+        // msgs.insert(
+        //   0,
+        //   Message(
+        //     false,
+        //     characters,
+        //   ),
+        // );
         setState(() {});
       },
       onStreamCreated: (subscription) {
@@ -87,6 +112,8 @@ class _CareerChatState extends State<CareerChat> {
       // Debounce 100ms for receive next value
       debounce: const Duration(milliseconds: 100),
     );
+    scrollController.animateTo(0.0,
+        duration: const Duration(seconds: 1), curve: Curves.easeOut);
   }
 
   @override
@@ -257,7 +284,7 @@ class _CareerChatState extends State<CareerChat> {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: Colors.blueGrey.withOpacity(0.5),
-                      border: Border.all(width: 3, color: Colors.teal),
+                      border: Border.all(width: 2, color: Colors.teal),
                     ),
                     child: widget.photo == ""
                         ? Container()
@@ -386,7 +413,8 @@ class _CareerChatState extends State<CareerChat> {
                         ),
                         onTap: () {
                           sendMsg(
-                              "$careerPrompt What skills are most important for success in this field?");
+                              "$careerPrompt What skills are most important for success in this field?",
+                              "What skills are most important for success in this field?");
                         },
                       ),
                       GestureDetector(
@@ -418,6 +446,7 @@ class _CareerChatState extends State<CareerChat> {
                         onTap: () {
                           sendMsg(
                             "$careerPrompt. How do you handle difficult situations or conflicts at work?",
+                            "How do you handle difficult situations or conflicts at work?",
                           );
                         },
                       ),
@@ -450,6 +479,7 @@ class _CareerChatState extends State<CareerChat> {
                         onTap: () {
                           sendMsg(
                             "$careerPrompt. Can you describe a typical day in your job?",
+                            " Can you describe a typical day in your job?",
                           );
                         },
                       ),
@@ -482,6 +512,7 @@ class _CareerChatState extends State<CareerChat> {
                         onTap: () {
                           sendMsg(
                             "$careerPrompt. How do you handle work-life balance in this career?",
+                            "How do you handle work-life balance in this career?",
                           );
                         },
                       ),
@@ -515,7 +546,9 @@ class _CareerChatState extends State<CareerChat> {
                                 textCapitalization:
                                     TextCapitalization.sentences,
                                 onSubmitted: (value) {
-                                  sendMsg(value);
+                                  sendMsg(
+                                      "$careerPrompt. What would you say to this: $value",
+                                      value);
                                   sentMessage = value;
                                 },
                                 keyboardType: TextInputType.multiline,
@@ -533,7 +566,9 @@ class _CareerChatState extends State<CareerChat> {
                         ),
                         InkWell(
                           onTap: () {
-                            sendMsg(sentMessage); // TODO: Change
+                            sendMsg(
+                                "$careerPrompt. What would you say to this: $sentMessage",
+                                sentMessage);
                           },
                           child: Container(
                             height: screenWidth * .1,

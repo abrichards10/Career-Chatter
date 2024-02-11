@@ -1,6 +1,6 @@
 // Load and obtain the shared preferences for this app.
-import 'package:demo_app/prefs.dart';
-import 'package:demo_app/prefs_keys.dart';
+import 'package:demo_app/prefs/prefs.dart';
+import 'package:demo_app/prefs/prefs_keys.dart';
 
 class PrefsHelper {
   static final PrefsHelper _helper = PrefsHelper._internal();

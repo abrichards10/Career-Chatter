@@ -16,7 +16,7 @@ import 'package:demo_app/model/profile_info.dart';
 import 'package:demo_app/options.dart';
 import 'package:demo_app/profile.dart';
 import 'package:demo_app/profile_remove_popup.dart';
-import 'package:demo_app/shared_prefs.dart';
+import 'package:demo_app/prefs/shared_prefs.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
@@ -251,13 +251,13 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
       child: Scaffold(
         appBar: AppBar(
             leading: IconButton(
-              icon: Icon(Icons.menu_book_sharp),
+              icon: Icon(Icons.account_circle),
               onPressed: () {},
             ),
             title: Text(
               'Career Chatbot',
               style: TextStyle(
-                fontSize: screenWidth * .07,
+                fontSize: screenWidth * .06,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -708,8 +708,8 @@ class _CareerFiltersState extends State<CareerFilters> {
               ),
             ),
           ),
-          const SizedBox(
-            height: 16.0,
+          SizedBox(
+            height: screenWidth * .05,
           ),
           Container(
             alignment: Alignment.center,
@@ -757,6 +757,14 @@ class _CareerFiltersState extends State<CareerFilters> {
               ),
             ),
           ),
+          SizedBox(
+            height: screenWidth * .05,
+          ),
+          Container(
+            alignment: Alignment.centerLeft,
+            child: Text(
+                "*Note: Results are not always an accurate representation of professions in the area, they are merely an estimate."),
+          )
         ],
       ),
     );
