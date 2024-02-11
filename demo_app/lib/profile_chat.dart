@@ -48,21 +48,6 @@ class _ProfileChatState extends State<ProfileChat> {
   StreamSubscription? responseSubscription;
   String definition = "";
 
-  void _showDefinition() async {
-    final selectedFilters = await showDialog<String>(
-      context: context,
-      builder: (context) => InfoPopup(
-        profession: widget.profession,
-      ),
-    );
-
-    if (selectedFilters != null) {
-      setState(() {
-        definition = selectedFilters;
-      });
-    }
-  }
-
   @override
   Widget build(context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -82,9 +67,115 @@ class _ProfileChatState extends State<ProfileChat> {
                   size: screenWidth * .05,
                 ),
                 onPressed: () {
-                  setState(() {
-                    _showDefinition();
-                  });
+                  setState(
+                    () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            content: Container(
+                              padding: EdgeInsets.only(
+                                top: 20,
+                              ),
+                              height: screenWidth * .8,
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "Interested in working as a",
+                                    style: TextStyle(
+                                      fontSize: screenWidth * .055,
+                                    ),
+                                  ),
+                                  Text(
+                                    "${widget.profession}?",
+                                    style: TextStyle(
+                                      fontSize: screenWidth * .055,
+                                      fontWeight: FontWeight.bold,
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Center(
+                                    child: Text(
+                                      "Have a look at these resources!",
+                                      style: TextStyle(
+                                        fontSize: screenWidth * .04,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  GestureDetector(
+                                    child: Container(
+                                      height: screenWidth * .2,
+                                      width: screenWidth * .8,
+                                      child: Card(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              "Top Programs",
+                                              style: TextStyle(
+                                                fontSize: screenWidth * .05,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            IconButton(
+                                              icon: Icon(
+                                                Icons.open_in_new,
+                                              ),
+                                              onPressed: () {},
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    child: Container(
+                                      height: screenWidth * .2,
+                                      width: screenWidth * .8,
+                                      child: Card(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              "Learn more",
+                                              style: TextStyle(
+                                                fontSize: screenWidth * .05,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            IconButton(
+                                              icon: Icon(
+                                                Icons.open_in_new,
+                                              ),
+                                              onPressed: () {},
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  );
                 },
               ),
             ),

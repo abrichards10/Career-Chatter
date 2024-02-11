@@ -25,6 +25,7 @@ class Profile extends StatefulWidget {
   final String location;
   final int salary;
   final int distance;
+  final double? rating;
 
   const Profile({
     super.key,
@@ -36,6 +37,7 @@ class Profile extends StatefulWidget {
     required this.location,
     required this.salary,
     required this.distance,
+    this.rating,
   });
 
   @override
@@ -47,21 +49,6 @@ class _ProfileState extends State<Profile> {
   List<Message> msgs = [];
   StreamSubscription? responseSubscription;
   String definition = "";
-
-  void _showDefinition() async {
-    final selectedFilters = await showDialog<String>(
-      context: context,
-      builder: (context) => InfoPopup(
-        profession: widget.profession,
-      ),
-    );
-
-    if (selectedFilters != null) {
-      setState(() {
-        definition = selectedFilters;
-      });
-    }
-  }
 
   @override
   Widget build(context) {
@@ -82,9 +69,18 @@ class _ProfileState extends State<Profile> {
                   size: screenWidth * .05,
                 ),
                 onPressed: () {
-                  setState(() {
-                    _showDefinition();
-                  });
+                  setState(
+                    () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            content: Text("HELLo"),
+                          );
+                        },
+                      );
+                    },
+                  );
                 },
               ),
             ),
@@ -148,6 +144,7 @@ class _ProfileState extends State<Profile> {
                                 location: widget.location,
                                 salary: widget.salary,
                                 distance: widget.distance,
+                                rating: widget.rating,
                               ),
                             ),
                           );

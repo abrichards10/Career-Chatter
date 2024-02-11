@@ -8,6 +8,7 @@ class ProfileData {
   String? profession;
   String? salary;
   String? distance;
+  double? rating;
 
   ProfileData({
     this.name,
@@ -17,6 +18,7 @@ class ProfileData {
     this.profession,
     this.salary,
     this.distance,
+    this.rating,
   });
 
   factory ProfileData.fromJson(Map<String, dynamic> jsonData) {
@@ -28,6 +30,7 @@ class ProfileData {
       profession: jsonData['profession'],
       salary: jsonData['salary'],
       distance: jsonData['distance'],
+      rating: jsonData['rating'],
     );
   }
 
@@ -39,6 +42,7 @@ class ProfileData {
         "profession": profession,
         "salary": salary,
         "distance": distance,
+        "rating": rating,
       };
 
   static Map<String, dynamic> toMap(ProfileData data) => {
@@ -49,6 +53,7 @@ class ProfileData {
         'profession': data.profession,
         'salary': data.salary,
         'distance': data.distance,
+        'rating': data.rating,
       };
 
   static String encode(List<ProfileData> profileDataList) => json.encode(

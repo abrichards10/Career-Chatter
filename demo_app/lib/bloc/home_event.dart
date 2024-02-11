@@ -23,3 +23,13 @@ class SavedProfileEvent extends HomeEvent {
 class RemoveProfileEvent extends HomeEvent {}
 
 class ReturnSavedProfile extends HomeEvent {}
+
+class AddRatingEvent extends HomeEvent {
+  final String? name;
+  final double rating;
+
+  AddRatingEvent(
+    this.rating,
+    this.name,
+  );
+}

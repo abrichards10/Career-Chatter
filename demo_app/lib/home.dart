@@ -122,7 +122,7 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
         0,
         screenWidth * .01,
         0,
-        screenWidth * .04,
+        screenWidth * .01,
       ),
       child: Row(
         children: [
@@ -149,34 +149,64 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
 
   Widget _textColumn(ProfileData thisProfile, double screenWidth) {
     return Container(
-      width: screenWidth - 200,
+      width: screenWidth - 170,
       padding: EdgeInsets.fromLTRB(
         screenWidth * .038,
         0,
         0,
         0,
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            thisProfile.name.toString(),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontSize: screenWidth * .04,
-              fontWeight: FontWeight.bold,
-            ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                thisProfile.name.toString(),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: screenWidth * .04,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                thisProfile.profession.toString(),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: screenWidth * .033,
+                ),
+              ),
+            ],
           ),
-          Text(
-            thisProfile.profession.toString(),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontSize: screenWidth * .04,
-            ),
-          ),
+          thisProfile.rating == null
+              ? Container()
+              : Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        thisProfile.rating.toString(),
+                        style: TextStyle(
+                          fontSize: screenWidth * .04,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                        size: 20,
+                      )
+                    ],
+                  ),
+                ),
         ],
       ),
     );
@@ -205,6 +235,12 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
       print(_profileList);
       setState(() {});
     }
+
+    if (state is AddRatingState) {
+      _profileList = state.data;
+      PrefsHelper().savedProfile = ProfileData.encode(state.data);
+      setState(() {});
+    }
   }
 
   @override
@@ -214,6 +250,10 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
       listener: _dishDisplayBlocListener,
       child: Scaffold(
         appBar: AppBar(
+            leading: IconButton(
+              icon: Icon(Icons.menu_book_sharp),
+              onPressed: () {},
+            ),
             title: Text(
               'Career Chatbot',
               style: TextStyle(
@@ -343,7 +383,7 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
                     _profileList.isEmpty
                         ? _defaultListView(screenWidth)
                         : SizedBox(
-                            height: screenWidth + 50,
+                            height: screenWidth * 1.3,
                             child: ListView.builder(
                               itemCount: _profileList.length,
                               itemBuilder: (context, index) {
@@ -417,6 +457,7 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
                                               distance: int.parse(thisProfile
                                                   .distance
                                                   .toString()),
+                                              rating: thisProfile.rating,
                                             ),
                                           ),
                                         );
@@ -468,7 +509,7 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
           child: Column(
             children: [
               Text(
-                'You have no conversations!\nTo add one, hit one of the buttons above ',
+                'You have no conversations! \n\nTo add one, tap one of the buttons above ☝',
                 style: TextStyle(fontSize: screenWidth * .05),
               ),
             ],

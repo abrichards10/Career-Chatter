@@ -19,6 +19,22 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<SavedProfileEvent>(savedProfileMethod);
     on<RemoveProfileEvent>(removeProfileMethod);
     on<ReturnSavedProfile>(returnSavedProfileMethod);
+    on<AddRatingEvent>(addRatingToProfileMethod);
+  }
+
+  Future<void> addRatingToProfileMethod(
+      AddRatingEvent event, Emitter<HomeState> emit) async {
+    encodedList = ProfileData.decode(PrefsHelper().savedProfile);
+
+    for (int i = 0; i < encodedList.length; i++) {
+      print('SEARCHING>>>');
+      print(encodedList[i].name);
+      if (event.name == encodedList[i].name) {
+        print("ADDDING RATING: ${event.rating} to ${encodedList[i].name}");
+        encodedList[i].rating = event.rating;
+      }
+    }
+    emit(AddRatingState(encodedList));
   }
 
   Future<void> returnSavedProfileMethod(

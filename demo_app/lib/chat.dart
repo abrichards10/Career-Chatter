@@ -6,11 +6,15 @@ import 'dart:ui' as ui;
 import 'package:chat_bubbles/bubbles/bubble_normal.dart';
 import 'package:chatgpt_completions/chatgpt_completions.dart';
 import 'package:confetti/confetti.dart';
+import 'package:demo_app/bloc/home_bloc.dart';
+import 'package:demo_app/bloc/home_event.dart';
+import 'package:demo_app/bloc/home_state.dart';
 import 'package:demo_app/design.dart';
 import 'package:demo_app/model/message.dart';
 import 'package:demo_app/profile.dart';
 import 'package:demo_app/profile_chat.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -22,6 +26,7 @@ class CareerChat extends StatefulWidget {
   final String location;
   final int salary;
   final int distance;
+  final double? rating;
 
   CareerChat({
     required this.name,
@@ -31,6 +36,7 @@ class CareerChat extends StatefulWidget {
     required this.location,
     required this.salary,
     required this.distance,
+    required this.rating,
   });
 
   @override
@@ -47,7 +53,9 @@ class _CareerChatState extends State<CareerChat> {
 
   StreamSubscription? responseSubscription;
   late ConfettiController _controllerCenter; // CONFETTI! :D
+  late Color starColor;
 
+  String careerPrompt = "";
   void sendMsg(String command) async {
     controller.clear();
 
@@ -83,11 +91,13 @@ class _CareerChatState extends State<CareerChat> {
 
   @override
   void initState() {
+    careerPrompt =
+        "Pretend you are ${widget.name} and you live in ${widget.location} working as a ${widget.profession} making ${widget.salary} dollars per year. You live ${widget.distance} miles away from ${widget.location}";
+
     _controllerCenter = ConfettiController(
       duration: const Duration(seconds: 1),
     );
-    // sendMsg(
-    //     "Hi! Pretend you are ${widget.name} and you live in ${widget.location} working as a ${widget.profession} making ${widget.salary} dollars per year. You live ${widget.distance} miles away from ${widget.location}? Say hi");
+    // sendMsg("$careerPrompt. Say hi");
     super.initState();
   }
 
@@ -142,7 +152,6 @@ class _CareerChatState extends State<CareerChat> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double boxHeight = screenWidth * .1;
-
     return Stack(
       children: [
         Scaffold(
@@ -162,7 +171,10 @@ class _CareerChatState extends State<CareerChat> {
                 ),
                 iconSize: screenWidth * .08,
                 icon: Icon(
-                  Icons.star_border_sharp,
+                  widget.rating == null ? Icons.star_border_sharp : Icons.star,
+                  color: widget.rating == null
+                      ? Colors.black
+                      : ui.Color.fromARGB(255, 199, 186, 15),
                 ),
                 onPressed: () {
                   showDialog(
@@ -192,7 +204,7 @@ class _CareerChatState extends State<CareerChat> {
                                 height: 10,
                               ),
                               RatingBar.builder(
-                                initialRating: 3,
+                                initialRating: widget.rating ?? 3,
                                 minRating: 1,
                                 direction: Axis.horizontal,
                                 allowHalfRating: true,
@@ -205,6 +217,9 @@ class _CareerChatState extends State<CareerChat> {
                                   color: Colors.amber,
                                 ),
                                 onRatingUpdate: (rating) {
+                                  context.read<HomeBloc>().add(
+                                        AddRatingEvent(rating, widget.name),
+                                      );
                                   print(rating);
                                 },
                               ),
@@ -212,10 +227,16 @@ class _CareerChatState extends State<CareerChat> {
                                 height: 8,
                               ),
                               ElevatedButton(
-                                child: Text("Done ✮⋆˙"),
+                                child: Text(
+                                  "Done ✮⋆˙",
+                                  style: TextStyle(
+                                    fontSize: screenWidth * .04,
+                                  ),
+                                ),
                                 onPressed: () {
                                   Navigator.pop(context);
                                   _controllerCenter.play(); // Confetti!
+                                  setState(() {});
                                 },
                               ),
                             ],
@@ -329,9 +350,9 @@ class _CareerChatState extends State<CareerChat> {
               Padding(
                 padding: EdgeInsets.fromLTRB(
                   screenWidth * .04,
+                  screenWidth * .04,
+                  screenWidth * .04,
                   screenWidth * .01,
-                  screenWidth * .04,
-                  screenWidth * .04,
                 ),
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
@@ -365,7 +386,7 @@ class _CareerChatState extends State<CareerChat> {
                         ),
                         onTap: () {
                           sendMsg(
-                              "Pretend you are ${widget.name} and you live in ${widget.location} working as a ${widget.profession} making ${widget.salary} dollars per year. You live ${widget.distance} miles away from ${widget.location}. What skills are most important for success in this field?");
+                              "$careerPrompt What skills are most important for success in this field?");
                         },
                       ),
                       GestureDetector(
@@ -396,7 +417,7 @@ class _CareerChatState extends State<CareerChat> {
                         ),
                         onTap: () {
                           sendMsg(
-                            "Pretend you are ${widget.name} and you live in ${widget.location} working as a ${widget.profession} making ${widget.salary} dollars per year. You live ${widget.distance} miles away from ${widget.location}. How do you handle difficult situations or conflicts at work?",
+                            "$careerPrompt. How do you handle difficult situations or conflicts at work?",
                           );
                         },
                       ),
@@ -428,7 +449,7 @@ class _CareerChatState extends State<CareerChat> {
                         ),
                         onTap: () {
                           sendMsg(
-                            "Pretend you are ${widget.name} and you live in ${widget.location} working as a ${widget.profession} making ${widget.salary} dollars per year. You live ${widget.distance} miles away from ${widget.location}. Can you describe a typical day in your job?",
+                            "$careerPrompt. Can you describe a typical day in your job?",
                           );
                         },
                       ),
@@ -460,7 +481,7 @@ class _CareerChatState extends State<CareerChat> {
                         ),
                         onTap: () {
                           sendMsg(
-                            "Pretend you are ${widget.name} and you live in ${widget.location} working as a ${widget.profession} making ${widget.salary} dollars per year. You live ${widget.distance} miles away from ${widget.location}. How do you handle work-life balance in this career?",
+                            "$careerPrompt. How do you handle work-life balance in this career?",
                           );
                         },
                       ),

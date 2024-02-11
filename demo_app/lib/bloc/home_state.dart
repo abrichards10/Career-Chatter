@@ -17,3 +17,8 @@ class ReturnSavedProfileState extends HomeState {
   List<ProfileData> data;
   ReturnSavedProfileState(this.data);
 }
+
+class AddRatingState extends HomeState {
+  List<ProfileData> data;
+  AddRatingState(this.data);
+}
