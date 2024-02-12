@@ -22,7 +22,6 @@ class Prefs {
   static Future<bool> setString(String key, String value) async =>
       await prefs.setString(key, value);
 
-  //use this for idList
   static Future<bool> setStringList(String key, List<String> value) async =>
       await prefs.setStringList(key, value);
 

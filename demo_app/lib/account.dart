@@ -30,6 +30,8 @@ class AccountState extends State<Account> with SingleTickerProviderStateMixin {
   ImageProvider<Object> userImage = AssetImage("assets/blank_profile.png");
 
   bool showAvg = false;
+  List<bool> isSelectedList = List.generate(careersWithEmoji.length,
+      (index) => false); // Assuming you have 5 TextButtons
 
   Widget confetti(ConfettiController controllerCenter) {
     return Align(
@@ -363,34 +365,121 @@ class AccountState extends State<Account> with SingleTickerProviderStateMixin {
               ),
               Expanded(
                 child: SingleChildScrollView(
-                  child: Padding(
-                    padding: EdgeInsets.only(right: 20, left: 20),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        // color: Color.fromARGB(255, 230, 255, 201),
+                        borderRadius: BorderRadius.all(Radius.circular(30))),
+                    padding: EdgeInsets.only(
+                      right: 20,
+                      left: 20,
+                    ),
+                    margin: EdgeInsets.only(
+                      right: 10,
+                      left: 10,
+                    ),
                     child: Wrap(
                       spacing: 3,
                       direction: Axis.horizontal,
-                      children: [
-                        for (var i in careersWithEmoji)
-                          TextButton(
-                            child: Text(
-                              i,
-                              style: TextStyle(
-                                fontSize: width * .05,
-                              ),
+                      children: List.generate(careersWithEmoji.length, (index) {
+                        return TextButton(
+                          style: TextButton.styleFrom(
+                            backgroundColor: isSelectedList[index]
+                                ? Color.fromARGB(255, 187, 224, 190)
+                                : Color.fromARGB(255, 240, 254, 223),
+                            padding: const EdgeInsets.fromLTRB(
+                              8,
+                              0,
+                              8,
+                              0,
                             ),
-                            onPressed: () {
-                              print(i);
-                              PrefsHelper().savedProfessions.insert(0, i);
-
-                              print(PrefsHelper().savedProfessions);
-                              setState(() {});
-                            },
+                            elevation: 2,
+                            side: BorderSide(
+                              color: isSelectedList[index]
+                                  ? Color.fromARGB(255, 93, 135, 95)
+                                  : Color.fromARGB(255, 178, 199, 151),
+                            ),
                           ),
-                      ],
+                          child: Text(
+                            careersWithEmoji[index],
+                            style: TextStyle(
+                              fontSize: width * .04,
+                            ),
+                          ),
+                          onPressed: () {
+                            // Toggle the selected state
+                            List<String> thisList =
+                                PrefsHelper().savedProfessions;
+
+                            isSelectedList[index]
+                                ? thisList.remove(careersWithEmoji[index])
+                                : thisList.insert(
+                                    0,
+                                    careersWithEmoji[index].toString(),
+                                  );
+
+                            isSelectedList[index] = !isSelectedList[
+                                index]; // Toggle the selected state of the button at index
+
+                            print(index);
+
+                            PrefsHelper().savedProfessions = thisList;
+                            print(PrefsHelper().savedProfessions);
+                            setState(() {});
+                          },
+                        );
+                      }),
+
+                      // for (var i in careersWithEmoji)
+                      //   TextButton(
+                      //     style: TextButton.styleFrom(
+                      //       backgroundColor: isButtonSelected
+                      //           ? Color.fromARGB(255, 240, 254, 223)
+                      //           : Colors
+                      //               .grey, // Change the background color based on the selected state
+
+                      //       padding: const EdgeInsets.fromLTRB(
+                      //         8,
+                      //         0,
+                      //         8,
+                      //         0,
+                      //       ),
+                      //       elevation: 2,
+                      //       side: BorderSide(
+                      //         color: Color.fromARGB(255, 178, 199, 151),
+                      //       ),
+                      //     ),
+                      //     child: Text(
+                      //       i,
+                      //       style: TextStyle(
+                      //         fontSize: width * .04,
+                      //       ),
+                      //     ),
+                      //     onPressed: () {
+                      //       isButtonSelected = !isButtonSelected;
+                      //       // Toggle the selected state
+
+                      //       print(i);
+                      //       List<String> thisList =
+                      //           PrefsHelper().savedProfessions;
+
+                      //       thisList.insert(
+                      //         0,
+                      //         i.toString(),
+                      //       );
+
+                      //       PrefsHelper().savedProfessions = thisList;
+                      //       print(PrefsHelper().savedProfessions);
+                      //       setState(() {});
+                      //     },
+                      //   ),
+                      // ],
                     ),
                   ),
                 ),
               ),
-              Text("HELLOP{DNSKPJ:EBF}")
+              Container(
+                height: 200,
+              ),
             ],
           ),
         ),

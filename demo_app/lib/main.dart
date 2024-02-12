@@ -4,15 +4,17 @@ import 'package:demo_app/bloc/api_service.dart';
 import 'package:demo_app/bloc/home_bloc.dart';
 import 'package:demo_app/commons/design.dart';
 import 'package:demo_app/home.dart';
-import 'package:demo_app/commons/my_keys.dart';
+import 'package:demo_app/my_keys.dart';
 import 'package:demo_app/prefs/prefs.dart';
+import 'package:demo_app/prefs/prefs_keys.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Prefs.init();
-  // await Prefs.remove(PrefKecys.savedProfile);
+  // await Prefs.remove(PrefKeys.savedProfile);
+  await Prefs.remove(PrefKeys.ksavedProfessions);
 
   OpenAI.apiKey = OpenAiKey;
   OpenAI.requestsTimeOut =
