@@ -1,6 +1,9 @@
 // Load and obtain the shared preferences for this app.
 import 'package:demo_app/prefs/prefs.dart';
 import 'package:demo_app/prefs/prefs_keys.dart';
+import 'package:flutter/material.dart';
+
+final List<Widget> painters = <Widget>[];
 
 class PrefsHelper {
   static final PrefsHelper _helper = PrefsHelper._internal();
@@ -11,7 +14,7 @@ class PrefsHelper {
 
   PrefsHelper._internal();
 
-  String get name => Prefs.getString(PrefKeys.kname) ?? "";
+  String get accountName => Prefs.getString(PrefKeys.kname) ?? "";
   String get photo => Prefs.getString(PrefKeys.kphoto) ?? "";
 
   // String get description => Prefs.getString(PrefKeys.description) ?? "";
@@ -24,7 +27,13 @@ class PrefsHelper {
   String get savedProfile =>
       Prefs.getString(PrefKeys.ksavedProfile) ?? ""; // SAVED PROFILE
 
-  set name(String value) => Prefs.setString(PrefKeys.kname, value);
+  bool get randomImageChosen =>
+      Prefs.getBool(PrefKeys.krandomImageChosen) ?? false;
+
+  List<String> get savedProfessions =>
+      Prefs.getStringList(PrefKeys.ksavedProfessions) ?? [];
+
+  set accountName(String value) => Prefs.setString(PrefKeys.kname, value);
   set photo(String value) => Prefs.setString(PrefKeys.kphoto, value);
 
   // set description(String value) => Prefs.setString(PrefKeys.description, value);
@@ -35,5 +44,12 @@ class PrefsHelper {
 
   set savedProfile(String value) {
     Prefs.setString(PrefKeys.ksavedProfile, value);
+  }
+
+  set randomImageChosen(bool value) =>
+      Prefs.setBool(PrefKeys.krandomImageChosen, value);
+
+  set savedProfessions(List<String> value) {
+    Prefs.setStringList(PrefKeys.ksavedProfessions, value);
   }
 }

@@ -9,7 +9,7 @@ import 'package:confetti/confetti.dart';
 import 'package:demo_app/bloc/home_bloc.dart';
 import 'package:demo_app/bloc/home_event.dart';
 import 'package:demo_app/bloc/home_state.dart';
-import 'package:demo_app/design.dart';
+import 'package:demo_app/commons/design.dart';
 import 'package:demo_app/model/message.dart';
 import 'package:demo_app/profile.dart';
 import 'package:demo_app/profile_chat.dart';
@@ -95,16 +95,6 @@ class _CareerChatState extends State<CareerChat> {
             prevResponse = msgs[0].msg;
           },
         );
-        // msgs.clear();
-
-        // msgs.insert(
-        //   0,
-        //   Message(
-        //     false,
-        //     characters,
-        //   ),
-        // );
-        setState(() {});
       },
       onStreamCreated: (subscription) {
         responseSubscription = subscription;

@@ -1,26 +1,22 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, avoid_print
 
 import 'dart:async';
-import 'dart:convert';
-import 'dart:developer';
 import 'dart:math';
-import 'dart:ui' as ui;
 
 import 'package:chatgpt_completions/chatgpt_completions.dart';
+import 'package:demo_app/account.dart';
 import 'package:demo_app/bloc/home_bloc.dart';
 import 'package:demo_app/bloc/home_event.dart';
 import 'package:demo_app/bloc/home_state.dart';
 import 'package:demo_app/chat.dart';
-import 'package:demo_app/design.dart';
+import 'package:demo_app/explore.dart';
 import 'package:demo_app/model/profile_info.dart';
-import 'package:demo_app/options.dart';
+import 'package:demo_app/commons/options.dart';
 import 'package:demo_app/profile.dart';
 import 'package:demo_app/profile_remove_popup.dart';
 import 'package:demo_app/prefs/shared_prefs.dart';
 import 'package:dropdown_search/dropdown_search.dart';
-import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
-import 'package:dart_openai/dart_openai.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:random_avatar/random_avatar.dart';
 import 'package:random_name_generator/random_name_generator.dart';
@@ -32,7 +28,6 @@ class CareerChatbotPage extends StatefulWidget {
 }
 
 class _CareerChatbotPageState extends State<CareerChatbotPage> {
-  List<String> _response = [];
   String? currentHeadshot = "";
   var randomNames =
       RandomNames(Zone.us); // TODO: change for inclusive language regions
@@ -243,6 +238,15 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
     }
   }
 
+  Route _createRoute() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => const Account(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return child;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -250,20 +254,35 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
       listener: _dishDisplayBlocListener,
       child: Scaffold(
         appBar: AppBar(
-            leading: IconButton(
-              icon: Icon(Icons.account_circle),
-              onPressed: () {},
+          leading: IconButton(
+            icon: Icon(Icons.account_circle),
+            onPressed: () {
+              Navigator.of(context).push(_createRoute());
+            },
+          ),
+          title: Text(
+            'Career Chatbot',
+            style: TextStyle(
+              fontSize: screenWidth * .06,
+              fontWeight: FontWeight.bold,
             ),
-            title: Text(
-              'Career Chatbot',
-              style: TextStyle(
-                fontSize: screenWidth * .06,
-                fontWeight: FontWeight.bold,
+          ),
+          actions: [
+            IconButton(
+              icon: Icon(
+                Icons.explore_sharp,
               ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Explore(),
+                  ),
+                );
+              },
             ),
-            actions: [
-              IconButton(icon: Icon(Icons.menu), onPressed: () {}),
-            ]),
+          ],
+        ),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -278,7 +297,7 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       GestureDetector(
-                        child: Container(
+                        child: SizedBox(
                           height: screenWidth * .3,
                           width: screenWidth * .6,
                           child: Card(
@@ -357,7 +376,7 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
                         },
                       ),
                       GestureDetector(
-                        child: Container(
+                        child: SizedBox(
                           height: screenWidth * .3,
                           width: screenWidth * .3,
                           child: Card(

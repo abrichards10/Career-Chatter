@@ -280,6 +280,51 @@ const List<String> professions = [
   "Tool and dye maker",
 ];
 
+const List<String> careersWithEmoji = [
+  "👩‍⚕️ Doctor",
+  "👨‍⚕️ Nurse",
+  "👩‍🍳 Baker",
+  "👨‍🍳 Chef",
+  "👩‍🔬 Chemist",
+  "👨‍🔧 Electrician",
+  "👩‍🚀 Engineer",
+  "👨‍🎨 Artist",
+  "👩‍🏭 Factory worker",
+  "👨‍👩‍👦‍👦 Family doctor",
+  "👩‍🌾 Farmer",
+  "👨‍🔥 Firefighter",
+  "👩‍🔧 Mechanic",
+  "👨‍🔬 Scientist",
+  "👩‍💼 Businessman",
+  "👨‍⚖️ Lawyer",
+  "👩‍💻 Programmer",
+  "👨‍💼 Businesswoman",
+  "👩‍🚒 Firefighter",
+  "👨‍🌾 Gardener",
+  "👩‍🏫 Professor",
+  "👨‍🏫 Teacher",
+  "👩‍🔬 Technician",
+  "👨‍✈️ Pilot",
+  "👩‍🚒 Policewoman",
+  "👨‍🚀 Astronaut",
+  "👩‍⚖️ Judge",
+  "👨‍⚖️ Judge",
+  "👩‍🚀 Astronaut",
+  "👨‍👦‍👦 Deliveryman",
+  "👩‍👦‍👦 Deliverywoman",
+  "👨‍👩‍👦‍👦 Family doctor",
+  "👩‍👩‍👧‍👧 Midwife",
+  "👨‍👩‍👧‍👧 Midwife",
+  "👩‍👧‍👦 Pharmacist",
+  "👨‍👧‍👦 Pharmacist",
+  "👩‍👦‍👦 Physician",
+  "👨‍👦‍👦 Physician",
+  "👩‍🔧 Plumber",
+  "👨‍🔧 Plumber",
+  "👩‍🏭 Welder",
+  "👨‍🏭 Welder"
+];
+
 const List<String> locations = [
   "Albuquerque, New Mexico",
   "Anaheim, California",
@@ -416,4 +461,3 @@ List<DropDownValueModel> dropdownValues = professions
 List<DropDownValueModel> dropdownValuesLocation = locations
     .map((location) => DropDownValueModel(name: location, value: location))
     .toList();
-
