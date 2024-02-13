@@ -75,13 +75,13 @@ class _ProfileChatState extends State<ProfileChat> {
                                   Text(
                                     "Interested in working as a",
                                     style: TextStyle(
-                                      fontSize: screenWidth * .055,
+                                      fontSize: screenWidth * .05,
                                     ),
                                   ),
                                   Text(
                                     "${widget.profession}?",
                                     style: TextStyle(
-                                      fontSize: screenWidth * .055,
+                                      fontSize: screenWidth * .05,
                                       fontWeight: FontWeight.bold,
                                       decoration: TextDecoration.underline,
                                     ),

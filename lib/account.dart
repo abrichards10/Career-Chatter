@@ -434,12 +434,65 @@ class AccountState extends State<Account> with SingleTickerProviderStateMixin {
               Container(
                 alignment: Alignment.centerLeft,
                 padding: EdgeInsets.only(left: 30, top: 30, bottom: 10),
-                child: Text(
-                  "Profession Prefs",
-                  style: TextStyle(
-                    fontSize: width * .05,
-                    fontWeight: FontWeight.bold,
-                  ),
+                child: Row(
+                  children: [
+                    Text(
+                      "Profession Prefs",
+                      style: TextStyle(
+                        fontSize: width * .05,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.centerRight,
+                      child: IconButton(
+                        padding: EdgeInsets.zero,
+                        constraints: BoxConstraints(),
+                        icon: Icon(
+                          Icons.info_outline,
+                          size: width * .05,
+                        ),
+                        onPressed: () {
+                          setState(
+                            () {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    content: Container(
+                                      padding: EdgeInsets.only(
+                                        top: 10,
+                                      ),
+                                      height: width * .3,
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(
+                                              "Note:",
+                                              style: TextStyle(
+                                                fontSize: width * .045,
+                                              ),
+                                            ),
+                                          ),
+                                          Text(
+                                            "These preferences will reflect in your Explore page!",
+                                            style: TextStyle(
+                                              fontSize: width * .035,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Expanded(
