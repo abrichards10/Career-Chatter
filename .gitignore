@@ -44,6 +44,7 @@
 /packages/flutter/coverage/
 version
 analysis_benchmark.json
+/lib/my_keys.dart
 
 # packages file containing multi-root paths
 .packages.generated
@@ -63,7 +64,6 @@ flutter_*.png
 linked_*.ds
 unlinked.ds
 unlinked_spec.ds
-/lib/my_keys.dart
 
 # Android related
 **/android/**/gradle-wrapper.jar
