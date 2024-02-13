@@ -259,12 +259,12 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
                                     ),
                                   ),
                                   SizedBox(
-                                    width: 10,
+                                    width: screenWidth * .04,
                                   ),
                                   Text(
                                     "Randomize!",
                                     style: TextStyle(
-                                      fontSize: screenWidth * .045,
+                                      fontSize: screenWidth * .04,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
