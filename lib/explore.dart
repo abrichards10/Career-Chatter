@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:demo_app/bloc/home_bloc.dart';
 import 'package:demo_app/bloc/home_event.dart';
 import 'package:demo_app/chat.dart';
+import 'package:demo_app/commons/design.dart';
 import 'package:demo_app/model/profile_info.dart';
 import 'package:demo_app/commons/options.dart';
 import 'package:demo_app/profile_remove_popup.dart';
@@ -116,9 +117,14 @@ class _ExploreState extends State<Explore> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Icon(Icons.delete,
-                          color: Colors.white, size: screenWidth * .1),
-                      SizedBox(width: screenWidth * .05),
+                      Icon(
+                        Icons.delete,
+                        color: Colors.white,
+                        size: screenWidth * .1,
+                      ),
+                      SizedBox(
+                        width: screenWidth * .05,
+                      ),
                     ],
                   ),
                 ),
@@ -164,7 +170,7 @@ class _ExploreState extends State<Explore> {
                     child: ListTile(
                       title: Column(
                         children: [
-                          _imageAndTextRow(
+                          imageAndTextRow(
                             thisProfile,
                             screenWidth,
                           ),
@@ -177,102 +183,6 @@ class _ExploreState extends State<Explore> {
             );
           },
         ),
-      ),
-    );
-  }
-
-  Widget _imageAndTextRow(ProfileData thisProfile, double screenWidth) {
-    return Container(
-      padding: EdgeInsets.fromLTRB(
-        0,
-        screenWidth * .01,
-        0,
-        screenWidth * .01,
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: screenWidth * .2,
-            height: screenWidth * .2,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.blueGrey.withOpacity(0.5),
-              border: Border.all(
-                width: 3,
-                color: Colors.teal,
-              ),
-            ),
-            child: SvgPicture.string(
-              thisProfile.photo,
-            ), // Container(),
-          ),
-          _textColumn(thisProfile, screenWidth),
-        ],
-      ),
-    );
-  }
-
-  Widget _textColumn(ProfileData thisProfile, double screenWidth) {
-    return Container(
-      width: screenWidth - 170,
-      padding: EdgeInsets.fromLTRB(
-        screenWidth * .038,
-        0,
-        0,
-        0,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                thisProfile.name.toString(),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontSize: screenWidth * .04,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Text(
-                thisProfile.profession.toString(),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontSize: screenWidth * .033,
-                ),
-              ),
-            ],
-          ),
-          thisProfile.rating == null
-              ? Container()
-              : Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        thisProfile.rating.toString(),
-                        style: TextStyle(
-                          fontSize: screenWidth * .04,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      Icon(
-                        Icons.star,
-                        color: Colors.amber,
-                        size: 20,
-                      )
-                    ],
-                  ),
-                ),
-        ],
       ),
     );
   }

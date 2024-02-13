@@ -364,7 +364,7 @@ class _CareerChatState extends State<CareerChat> {
               Padding(
                 padding: EdgeInsets.fromLTRB(
                   screenWidth * .04,
-                  screenWidth * .04,
+                  screenWidth * .02,
                   screenWidth * .04,
                   screenWidth * .01,
                 ),

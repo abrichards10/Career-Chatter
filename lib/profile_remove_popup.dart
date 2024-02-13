@@ -23,37 +23,40 @@ class _SavedScreenRemovePopup extends State<ProfileDataRemovePopup> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return AlertDialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.5),
       ),
-      contentPadding: EdgeInsets.symmetric(horizontal: 50),
+      contentPadding: EdgeInsets.symmetric(horizontal: screenWidth * .5),
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Icon(
             Icons.delete,
-            color: Colors.black,
-            size: 27.6, // 15% larger size
+            size: screenWidth * .06,
           ),
-          SizedBox(height: 8),
+          SizedBox(
+            height: screenWidth * .03,
+          ),
           Text(
             "Are you sure you\nwant to delete this conversation?",
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 15,
-              fontFamily: 'Poppins-Bold',
-              color: Colors.black,
+              fontSize: screenWidth * .04,
             ),
           ),
-          SizedBox(height: 16),
+          SizedBox(height: screenWidth * .04),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              SizedBox(width: 10),
+              SizedBox(
+                width: screenWidth * .04,
+              ),
               Container(
-                width: 87,
-                height: 35,
+                width: screenWidth * .23,
+                height: screenWidth * .1,
                 child: ElevatedButton(
                   onPressed: () {
                     if (!dismissed) {
@@ -72,15 +75,14 @@ class _SavedScreenRemovePopup extends State<ProfileDataRemovePopup> {
                   child: Text(
                     "Yes",
                     style: TextStyle(
-                      fontSize: 15,
-                      fontFamily: 'Poppins-Bold',
+                      fontSize: screenWidth * .04,
                     ),
                   ),
                 ),
               ),
               Container(
-                width: 87,
-                height: 35,
+                width: screenWidth * .23,
+                height: screenWidth * .1,
                 child: OutlinedButton(
                   onPressed: () {
                     Navigator.of(context).pop(false);
@@ -94,13 +96,13 @@ class _SavedScreenRemovePopup extends State<ProfileDataRemovePopup> {
                   child: Text(
                     "No",
                     style: TextStyle(
-                      fontSize: 15,
+                      fontSize: screenWidth * .04,
                       fontFamily: 'Poppins-Bold',
                     ),
                   ),
                 ),
               ),
-              SizedBox(width: 10)
+              SizedBox(width: screenWidth * .04)
             ],
           ),
         ],

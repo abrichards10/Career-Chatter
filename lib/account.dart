@@ -105,14 +105,17 @@ class AccountState extends State<Account> with SingleTickerProviderStateMixin {
       context: context,
       builder: (context) {
         return AlertDialog(
-          insetPadding: EdgeInsets.symmetric(horizontal: 80, vertical: 120),
+          insetPadding: EdgeInsets.symmetric(
+            horizontal: screenWidth * .2,
+            vertical: screenWidth * .4,
+          ),
           content: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
-                  height: 5,
+                  height: screenWidth * .02,
                 ),
                 Row(
                   children: [
@@ -127,14 +130,13 @@ class AccountState extends State<Account> with SingleTickerProviderStateMixin {
                         painters.add(
                           RandomAvatar(
                             DateTime.now().toIso8601String(),
-                            height: 130,
-                            width: 132,
+                            height: screenWidth * .35,
+                            width: screenWidth * .35,
                           ),
                         );
                         _assetController.text = svg;
                         setState(() {});
                       },
-                      tooltip: 'Generate',
                       child: Icon(
                         Icons.gesture,
                       ),
@@ -197,7 +199,7 @@ class AccountState extends State<Account> with SingleTickerProviderStateMixin {
     );
   }
 
-  Form userName() {
+  Form userName(double screenWidth) {
     if (PrefsHelper().accountName == "Name" ||
         PrefsHelper().accountName == "") {
       _textEditingController1.text = "Name";
@@ -208,13 +210,13 @@ class AccountState extends State<Account> with SingleTickerProviderStateMixin {
         children: [
           GestureDetector(
             child: SizedBox(
-              height: 50,
+              height: screenWidth * .1,
               child: Text(
                 _textEditingController1.text,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 18,
+                  fontSize: screenWidth * .05,
                 ),
               ),
             ),
@@ -224,20 +226,25 @@ class AccountState extends State<Account> with SingleTickerProviderStateMixin {
                 builder: (BuildContext context) {
                   return Card(
                     margin: EdgeInsets.fromLTRB(
-                      70,
+                      screenWidth * .15,
                       MediaQuery.of(context).size.height / 2.5,
-                      70,
+                      screenWidth * .15,
                       MediaQuery.of(context).size.height / 2.5,
                     ),
                     child: SizedBox(
-                      width: 250,
+                      width: screenWidth * .3,
                       child: TextField(
                         controller: _textEditingController1,
                         autofocus: true,
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Who are you?',
-                          contentPadding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+                          contentPadding: EdgeInsets.fromLTRB(
+                            screenWidth * .04,
+                            screenWidth * .04,
+                            screenWidth * .04,
+                            0,
+                          ),
                         ),
                         maxLength: 20,
                         maxLengthEnforcement: MaxLengthEnforcement.enforced,
@@ -256,13 +263,14 @@ class AccountState extends State<Account> with SingleTickerProviderStateMixin {
             },
           ),
           SizedBox(
-            width: 50,
+            width: screenWidth * .1,
           )
         ],
       ),
     );
   }
 
+// FOR LATER
   userLocation(double screenWidth) {
     if (PrefsHelper().accountLocation == "Location" ||
         PrefsHelper().accountLocation == "") {
@@ -327,63 +335,6 @@ class AccountState extends State<Account> with SingleTickerProviderStateMixin {
     );
   }
 
-  Widget headerChild(String header, String value) {
-    return Expanded(
-      child: Column(
-        children: <Widget>[
-          Text(
-            header,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-            ),
-          ),
-          const SizedBox(
-            height: 8.0,
-          ),
-          Text(
-            value,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 14,
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget infoChild(double width, IconData icon, data) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
-      child: InkWell(
-        child: Row(
-          children: <Widget>[
-            SizedBox(
-              width: width / 10,
-            ),
-            Icon(
-              icon,
-              size: 36.0,
-            ),
-            SizedBox(
-              width: width / 20,
-            ),
-            Text(
-              data,
-              style: TextStyle(
-                fontSize: 18,
-              ),
-            )
-          ],
-        ),
-        onTap: () {
-          // print('Info Object selected');
-        },
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -420,7 +371,7 @@ class AccountState extends State<Account> with SingleTickerProviderStateMixin {
                             userIcon(height, width),
                             Column(
                               children: [
-                                userName(),
+                                userName(width),
                                 // userLocation(width),
                               ],
                             ),
@@ -433,7 +384,11 @@ class AccountState extends State<Account> with SingleTickerProviderStateMixin {
               ),
               Container(
                 alignment: Alignment.centerLeft,
-                padding: EdgeInsets.only(left: 30, top: 30, bottom: 10),
+                padding: EdgeInsets.only(
+                  left: width * .05,
+                  top: width * .05,
+                  bottom: width * .02,
+                ),
                 child: Row(
                   children: [
                     Text(
@@ -461,7 +416,7 @@ class AccountState extends State<Account> with SingleTickerProviderStateMixin {
                                   return AlertDialog(
                                     content: Container(
                                       padding: EdgeInsets.only(
-                                        top: 10,
+                                        top: width * .01,
                                       ),
                                       height: width * .3,
                                       child: Column(
@@ -502,15 +457,15 @@ class AccountState extends State<Account> with SingleTickerProviderStateMixin {
                         // color: Color.fromARGB(255, 230, 255, 201),
                         borderRadius: BorderRadius.all(Radius.circular(30))),
                     padding: EdgeInsets.only(
-                      right: 20,
-                      left: 20,
+                      right: width * .04,
+                      left: width * .04,
                     ),
                     margin: EdgeInsets.only(
-                      right: 10,
-                      left: 10,
+                      right: width * .04,
+                      left: width * .04,
                     ),
                     child: Wrap(
-                      spacing: 3,
+                      spacing: 4,
                       direction: Axis.horizontal,
                       children: List.generate(careersWithEmoji.length, (index) {
                         return TextButton(
@@ -518,10 +473,10 @@ class AccountState extends State<Account> with SingleTickerProviderStateMixin {
                             backgroundColor: isSelectedList[index]
                                 ? Color.fromARGB(255, 187, 224, 190)
                                 : Color.fromARGB(255, 240, 254, 223),
-                            padding: const EdgeInsets.fromLTRB(
-                              8,
+                            padding: EdgeInsets.fromLTRB(
+                              width * .02,
                               0,
-                              8,
+                              width * .02,
                               0,
                             ),
                             elevation: 2,
@@ -565,10 +520,10 @@ class AccountState extends State<Account> with SingleTickerProviderStateMixin {
               Container(
                 alignment: Alignment.centerLeft,
                 padding: EdgeInsets.only(
-                  left: 30,
-                  top: 20,
-                  bottom: 10,
-                  right: 30,
+                  left: width * .05,
+                  top: 0,
+                  bottom: width * .01,
+                  right: width * .05,
                 ),
                 child: Column(
                   children: [
@@ -617,7 +572,7 @@ class AccountState extends State<Account> with SingleTickerProviderStateMixin {
                 ),
               ),
               SizedBox(
-                height: 200,
+                height: width * .6,
               )
             ],
           ),

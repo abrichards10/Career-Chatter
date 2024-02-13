@@ -49,7 +49,6 @@ class _ProfileChatState extends State<ProfileChat> {
         child: Column(
           children: [
             Container(
-              padding: const EdgeInsets.all(0.0),
               alignment: Alignment.centerRight,
               child: IconButton(
                 padding: EdgeInsets.zero,
@@ -87,7 +86,7 @@ class _ProfileChatState extends State<ProfileChat> {
                                     ),
                                   ),
                                   SizedBox(
-                                    height: 20,
+                                    height: screenWidth * .04,
                                   ),
                                   Center(
                                     child: Text(
@@ -98,7 +97,7 @@ class _ProfileChatState extends State<ProfileChat> {
                                     ),
                                   ),
                                   SizedBox(
-                                    height: 20,
+                                    height: screenWidth * .04,
                                   ),
                                   GestureDetector(
                                     child: Container(
@@ -110,7 +109,7 @@ class _ProfileChatState extends State<ProfileChat> {
                                               MainAxisAlignment.spaceAround,
                                           children: [
                                             SizedBox(
-                                              width: 10,
+                                              height: screenWidth * .04,
                                             ),
                                             Text(
                                               "Top Programs",
@@ -140,7 +139,7 @@ class _ProfileChatState extends State<ProfileChat> {
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             SizedBox(
-                                              width: 10,
+                                              height: screenWidth * .04,
                                             ),
                                             Text(
                                               "Learn more",
@@ -176,12 +175,11 @@ class _ProfileChatState extends State<ProfileChat> {
               '~${widget.name}~',
               style: TextStyle(
                 fontSize: screenWidth * .07,
-                height: 0,
                 fontWeight: FontWeight.bold,
               ),
             )),
             SizedBox(
-              height: 20,
+              height: screenWidth * .04,
             ),
             Container(
               width: screenWidth * .35,
@@ -189,7 +187,10 @@ class _ProfileChatState extends State<ProfileChat> {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: Colors.blueGrey.withOpacity(0.5),
-                border: Border.all(width: 3, color: Colors.teal),
+                border: Border.all(
+                  width: 3,
+                  color: Colors.teal,
+                ),
               ),
               child: widget.photo == ""
                   ? Container()
@@ -198,7 +199,7 @@ class _ProfileChatState extends State<ProfileChat> {
                     ),
             ),
             SizedBox(
-              height: 20,
+              height: screenWidth * .04,
             ),
             Container(
               alignment: Alignment.centerLeft,
@@ -240,106 +241,6 @@ class _ProfileChatState extends State<ProfileChat> {
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class InfoPopup extends StatefulWidget {
-  final String profession;
-
-  const InfoPopup({super.key, required this.profession});
-
-  @override
-  _InfoPopupState createState() => _InfoPopupState();
-}
-
-class _InfoPopupState extends State<InfoPopup> {
-  List<Message> theseMsgs = [];
-  StreamSubscription? thisResponseSubscription;
-  String definition = "";
-  ScrollController scrollController = ScrollController();
-  bool isTyping = false;
-
-  @override
-  void initState() {
-    sendMsg("What is the definition of: ${widget.profession}?");
-    super.initState();
-  }
-
-  void sendMsg(String command) async {
-    ChatGPTCompletions.instance.textCompletions(
-      TextCompletionsParams(
-        messagesTurbo: [
-          MessageTurbo(
-            role: TurboRole.user,
-            content: command,
-          ),
-        ],
-        model: GPTModel.gpt3p5turbo,
-      ),
-      onStreamValue: (characters) {
-        theseMsgs.clear();
-
-        theseMsgs.insert(
-          0,
-          Message(
-            false,
-            characters,
-          ),
-        );
-        setState(() {});
-      },
-      onStreamCreated: (subscription) {
-        thisResponseSubscription = subscription;
-      },
-      // Debounce 100ms for receive next value
-      debounce: const Duration(milliseconds: 100),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    return AlertDialog(
-      content: Container(
-        height: screenWidth * .5,
-        width: screenWidth * .4,
-        child: ListView.builder(
-          controller: scrollController,
-          itemCount: theseMsgs.length,
-          itemBuilder: (context, index) {
-            isTyping && index == 0
-                ? Column(
-                    children: [
-                      BubbleNormal(
-                        text: theseMsgs[0].msg,
-                        isSender: true,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                          left: screenWidth * .04,
-                          top: screenWidth * .01,
-                        ),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            "Typing...",
-                            style: TextStyle(
-                              fontSize: screenWidth * .05,
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  )
-                : BubbleNormal(
-                    text: theseMsgs[index].msg,
-                    isSender: theseMsgs[index].isSender,
-                    color: ui.Color.fromARGB(255, 189, 225, 190),
-                  );
-          },
         ),
       ),
     );

@@ -10,6 +10,7 @@ import 'package:demo_app/bloc/home_event.dart';
 import 'package:demo_app/bloc/home_state.dart';
 import 'package:demo_app/career_filters.dart';
 import 'package:demo_app/chat.dart';
+import 'package:demo_app/commons/design.dart';
 import 'package:demo_app/explore.dart';
 import 'package:demo_app/model/profile_info.dart';
 import 'package:demo_app/commons/options.dart';
@@ -20,7 +21,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:random_avatar/random_avatar.dart';
 import 'package:random_name_generator/random_name_generator.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class CareerChatbotPage extends StatefulWidget {
   @override
@@ -134,102 +134,6 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
     );
   }
 
-  Widget _imageAndTextRow(ProfileData thisProfile, double screenWidth) {
-    return Container(
-      padding: EdgeInsets.fromLTRB(
-        0,
-        screenWidth * .01,
-        0,
-        screenWidth * .01,
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: screenWidth * .2,
-            height: screenWidth * .2,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.blueGrey.withOpacity(0.5),
-              border: Border.all(
-                width: 3,
-                color: Colors.teal,
-              ),
-            ),
-            child: SvgPicture.string(
-              thisProfile.photo,
-            ), // Container(),
-          ),
-          _textColumn(thisProfile, screenWidth),
-        ],
-      ),
-    );
-  }
-
-  Widget _textColumn(ProfileData thisProfile, double screenWidth) {
-    return Container(
-      width: screenWidth - 170,
-      padding: EdgeInsets.fromLTRB(
-        screenWidth * .038,
-        0,
-        0,
-        0,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                thisProfile.name.toString(),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontSize: screenWidth * .04,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Text(
-                thisProfile.profession.toString(),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontSize: screenWidth * .033,
-                ),
-              ),
-            ],
-          ),
-          thisProfile.rating == null
-              ? Container()
-              : Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        thisProfile.rating.toString(),
-                        style: TextStyle(
-                          fontSize: screenWidth * .04,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      Icon(
-                        Icons.star,
-                        color: Colors.amber,
-                        size: 20,
-                      )
-                    ],
-                  ),
-                ),
-        ],
-      ),
-    );
-  }
-
   _dishDisplayBlocListener(BuildContext context, HomeState state) {
     if (state is SavedProfileState) {
       print("SAVED");
@@ -310,13 +214,17 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
         ),
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(
+              screenWidth * .03,
+            ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  padding: EdgeInsets.only(bottom: 10),
+                  padding: EdgeInsets.only(
+                    bottom: screenWidth * .01,
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -409,8 +317,7 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
                               "+",
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                fontSize: screenWidth * .2,
-                                height: 0,
+                                fontSize: screenWidth * .16,
                               ),
                             ),
                           ),
@@ -470,10 +377,14 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.end,
                                         children: [
-                                          Icon(Icons.delete,
-                                              color: Colors.white,
-                                              size: screenWidth * .1),
-                                          SizedBox(width: screenWidth * .05),
+                                          Icon(
+                                            Icons.delete,
+                                            color: Colors.white,
+                                            size: screenWidth * .1,
+                                          ),
+                                          SizedBox(
+                                            width: screenWidth * .05,
+                                          ),
                                         ],
                                       ),
                                     ),
@@ -516,7 +427,7 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
                                         child: ListTile(
                                           title: Column(
                                             children: [
-                                              _imageAndTextRow(
+                                              imageAndTextRow(
                                                 thisProfile,
                                                 screenWidth,
                                               ),

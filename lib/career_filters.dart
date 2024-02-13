@@ -1,26 +1,12 @@
 // ignore_for_file: prefer_const_constructors, avoid_print
 
-import 'dart:async';
-import 'dart:math';
-
-import 'package:chatgpt_completions/chatgpt_completions.dart';
-import 'package:demo_app/account.dart';
-import 'package:demo_app/bloc/home_bloc.dart';
-import 'package:demo_app/bloc/home_event.dart';
-import 'package:demo_app/bloc/home_state.dart';
-import 'package:demo_app/chat.dart';
-import 'package:demo_app/explore.dart';
-import 'package:demo_app/model/profile_info.dart';
 import 'package:demo_app/commons/options.dart';
 import 'package:demo_app/profile.dart';
-import 'package:demo_app/profile_remove_popup.dart';
 import 'package:demo_app/prefs/shared_prefs.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:random_avatar/random_avatar.dart';
 import 'package:random_name_generator/random_name_generator.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class CareerFilters extends StatefulWidget {
   /// initial selection for the slider
@@ -127,7 +113,7 @@ class _CareerFiltersState extends State<CareerFilters> {
             selectedItem: PrefsHelper().location,
           ),
           SizedBox(
-            height: 20,
+            height: screenWidth * .04,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -263,7 +249,11 @@ class _CareerFiltersState extends State<CareerFilters> {
           Container(
             alignment: Alignment.centerLeft,
             child: Text(
-                "*Note: Results are not always an accurate representation of professions in the area, they are merely an estimate."),
+              "*Note: Results are not always an accurate representation of professions in the area, they are merely an estimate.",
+              style: TextStyle(
+                fontSize: screenWidth * .03,
+              ),
+            ),
           )
         ],
       ),
