@@ -10,7 +10,6 @@ import 'package:demo_app/bloc/home_bloc.dart';
 import 'package:demo_app/bloc/home_event.dart';
 import 'package:demo_app/commons/design.dart';
 import 'package:demo_app/model/message.dart';
-import 'package:demo_app/prefs/shared_prefs.dart';
 import 'package:demo_app/profile_chat.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -373,6 +372,38 @@ class _CareerChatState extends State<CareerChat> {
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: [
+                      GestureDetector(
+                        child: Container(
+                          padding: EdgeInsets.only(
+                            left: screenWidth * .03,
+                            right: screenWidth * .03,
+                          ),
+                          width: screenWidth * .5,
+                          child: Card(
+                            elevation: 2,
+                            child: Padding(
+                              padding: EdgeInsets.fromLTRB(
+                                screenWidth * .04,
+                                screenWidth * .04,
+                                screenWidth * .04,
+                                screenWidth * .04,
+                              ),
+                              child: Text(
+                                "What are your job responsibilities?",
+                                style: TextStyle(
+                                  fontFamily: mainFont.fontFamily,
+                                  fontSize: screenWidth * .04,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        onTap: () {
+                          sendMsg(
+                              "$careerPrompt What are your job responsibilities?",
+                              "What are your job responsibilities?");
+                        },
+                      ),
                       GestureDetector(
                         child: Container(
                           padding: EdgeInsets.only(

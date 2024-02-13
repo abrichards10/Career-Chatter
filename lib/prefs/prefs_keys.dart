@@ -10,4 +10,5 @@ class PrefKeys {
   static const String krandomImageChosen = 'randomImageChosen';
   static const String ksavedProfessions = 'savedProfessions';
   static const String kpreferredSalary = 'preferredSalary';
+  static const String kaccountLocation = 'accountLocation';
 }

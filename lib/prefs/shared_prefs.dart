@@ -15,6 +15,9 @@ class PrefsHelper {
   PrefsHelper._internal();
 
   String get accountName => Prefs.getString(PrefKeys.kname) ?? "";
+  String get accountLocation =>
+      Prefs.getString(PrefKeys.kaccountLocation) ?? "";
+
   String get photo => Prefs.getString(PrefKeys.kphoto) ?? "";
 
   // String get description => Prefs.getString(PrefKeys.description) ?? "";
@@ -36,6 +39,9 @@ class PrefsHelper {
       Prefs.getStringList(PrefKeys.ksavedProfessions) ?? [];
 
   set accountName(String value) => Prefs.setString(PrefKeys.kname, value);
+  set accountLocation(String value) =>
+      Prefs.setString(PrefKeys.kaccountLocation, value);
+
   set photo(String value) => Prefs.setString(PrefKeys.kphoto, value);
   set preferredSalary(int value) =>
       Prefs.setInt(PrefKeys.kpreferredSalary, value);

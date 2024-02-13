@@ -55,32 +55,6 @@ class _ProfileState extends State<Profile> {
       content: SingleChildScrollView(
         child: Column(
           children: [
-            // Container(
-            //   padding: const EdgeInsets.all(0.0),
-            //   alignment: Alignment.centerRight,
-            //   child: IconButton(
-            //     padding: EdgeInsets.zero,
-            //     constraints: BoxConstraints(),
-            //     icon: Icon(
-            //       Icons.info_outline,
-            //       size: screenWidth * .05,
-            //     ),
-            //     onPressed: () {
-            //       setState(
-            //         () {
-            //           showDialog(
-            //             context: context,
-            //             builder: (context) {
-            //               return AlertDialog(
-            //                 content: Text("HELLo"),
-            //               );
-            //             },
-            //           );
-            //         },
-            //       );
-            //     },
-            //   ),
-            // ),
             Text(
               'Hi! I\'m ${widget.name}',
               style: TextStyle(

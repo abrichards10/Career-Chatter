@@ -6,6 +6,7 @@ import 'dart:math';
 import 'package:demo_app/commons/options.dart';
 import 'package:demo_app/prefs/shared_prefs.dart';
 import 'package:confetti/confetti.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:random_avatar/random_avatar.dart';
@@ -20,7 +21,11 @@ class Account extends StatefulWidget {
 
 class AccountState extends State<Account> with SingleTickerProviderStateMixin {
   final TextEditingController _textEditingController1 = TextEditingController();
+  final TextEditingController _textEditingController2 = TextEditingController();
+
   final formKey1 = GlobalKey<FormState>();
+  final formKey2 = GlobalKey<FormState>();
+
   late ConfettiController _controllerCenter; // CONFETTI! :D
 
   File? imageFile;
@@ -80,6 +85,8 @@ class AccountState extends State<Account> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     _textEditingController1.text = PrefsHelper().accountName;
+    _textEditingController2.text = PrefsHelper().accountLocation;
+
     _controllerCenter = ConfettiController(
       duration: const Duration(seconds: 1),
     );
@@ -98,7 +105,7 @@ class AccountState extends State<Account> with SingleTickerProviderStateMixin {
       context: context,
       builder: (context) {
         return AlertDialog(
-          insetPadding: EdgeInsets.symmetric(horizontal: 90, vertical: 120),
+          insetPadding: EdgeInsets.symmetric(horizontal: 80, vertical: 120),
           content: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -256,6 +263,70 @@ class AccountState extends State<Account> with SingleTickerProviderStateMixin {
     );
   }
 
+  userLocation(double screenWidth) {
+    if (PrefsHelper().accountLocation == "Location" ||
+        PrefsHelper().accountLocation == "") {
+      _textEditingController2.text = "Location";
+    }
+    return GestureDetector(
+      child: SizedBox(
+        height: 50,
+        child: Text(
+          _textEditingController2.text,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+        ),
+      ),
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              insetPadding: EdgeInsets.all(50),
+              content: Column(
+                children: [
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Location",
+                      style: TextStyle(
+                        fontSize: screenWidth * .05,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Card(
+                    child: DropdownSearch<String>(
+                      items: locations,
+                      popupProps: PopupProps.menu(
+                        showSearchBox: true,
+                      ),
+                      dropdownDecoratorProps: DropDownDecoratorProps(
+                        textAlignVertical: TextAlignVertical.center,
+                        dropdownSearchDecoration: InputDecoration(
+                          border: InputBorder.none,
+                        ),
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          PrefsHelper().accountLocation = value.toString();
+                        });
+                      },
+                      selectedItem: PrefsHelper().accountLocation,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
   Widget headerChild(String header, String value) {
     return Expanded(
       child: Column(
@@ -347,7 +418,12 @@ class AccountState extends State<Account> with SingleTickerProviderStateMixin {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             userIcon(height, width),
-                            userName(),
+                            Column(
+                              children: [
+                                userName(),
+                                // userLocation(width),
+                              ],
+                            ),
                           ],
                         ),
                       ],
@@ -437,7 +513,7 @@ class AccountState extends State<Account> with SingleTickerProviderStateMixin {
                 alignment: Alignment.centerLeft,
                 padding: EdgeInsets.only(
                   left: 30,
-                  top: 0,
+                  top: 20,
                   bottom: 10,
                   right: 30,
                 ),
