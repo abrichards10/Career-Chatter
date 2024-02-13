@@ -314,15 +314,10 @@ const List<String> careersWithEmoji = [
   "👩‍👦‍👦 Deliverywoman",
   "👨‍👩‍👦‍👦 Family doctor",
   "👩‍👩‍👧‍👧 Midwife",
-  "👨‍👩‍👧‍👧 Midwife",
-  "👩‍👧‍👦 Pharmacist",
   "👨‍👧‍👦 Pharmacist",
-  "👩‍👦‍👦 Physician",
   "👨‍👦‍👦 Physician",
   "👩‍🔧 Plumber",
-  "👨‍🔧 Plumber",
   "👩‍🏭 Welder",
-  "👨‍🏭 Welder"
 ];
 
 const List<String> locations = [

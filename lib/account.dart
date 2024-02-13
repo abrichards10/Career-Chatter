@@ -30,8 +30,9 @@ class AccountState extends State<Account> with SingleTickerProviderStateMixin {
   ImageProvider<Object> userImage = AssetImage("assets/blank_profile.png");
 
   bool showAvg = false;
-  List<bool> isSelectedList = List.generate(careersWithEmoji.length,
-      (index) => false); // Assuming you have 5 TextButtons
+
+  List<bool> isSelectedList =
+      List.generate(careersWithEmoji.length, (index) => false);
 
   double _preferredSalary = PrefsHelper().salary.toDouble();
 
@@ -422,8 +423,6 @@ class AccountState extends State<Account> with SingleTickerProviderStateMixin {
                             isSelectedList[index] = !isSelectedList[
                                 index]; // Toggle the selected state of the button at index
 
-                            print(index);
-
                             PrefsHelper().savedProfessions = thisList;
                             print(PrefsHelper().savedProfessions);
                             setState(() {});
@@ -436,8 +435,12 @@ class AccountState extends State<Account> with SingleTickerProviderStateMixin {
               ),
               Container(
                 alignment: Alignment.centerLeft,
-                padding:
-                    EdgeInsets.only(left: 30, top: 30, bottom: 10, right: 30),
+                padding: EdgeInsets.only(
+                  left: 30,
+                  top: 0,
+                  bottom: 10,
+                  right: 30,
+                ),
                 child: Column(
                   children: [
                     Row(
@@ -469,7 +472,7 @@ class AccountState extends State<Account> with SingleTickerProviderStateMixin {
                           min: 0,
                           max: 400000,
                           divisions: 100,
-                          value: _preferredSalary,
+                          value: PrefsHelper().preferredSalary.toDouble(),
                           label: PrefsHelper().preferredSalary.toString(),
                           onChanged: (value) {
                             setState(() {

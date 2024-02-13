@@ -209,7 +209,7 @@ class _ProfileChatState extends State<ProfileChat> {
                     'Profession: ${widget.profession}',
                     textAlign: TextAlign.start,
                     style: TextStyle(
-                      fontSize: screenWidth * .045,
+                      fontSize: screenWidth * .04,
                       height: 2,
                       fontWeight: FontWeight.bold,
                     ),
@@ -222,7 +222,7 @@ class _ProfileChatState extends State<ProfileChat> {
               child: Text(
                 'Salary: \$${widget.salary}',
                 style: TextStyle(
-                  fontSize: screenWidth * .045,
+                  fontSize: screenWidth * .04,
                   height: 2,
                   fontWeight: FontWeight.bold,
                 ),
@@ -233,7 +233,7 @@ class _ProfileChatState extends State<ProfileChat> {
               child: Text(
                 'Location: ${widget.location}',
                 style: TextStyle(
-                  fontSize: screenWidth * .045,
+                  fontSize: screenWidth * .04,
                   height: 2,
                   fontWeight: FontWeight.bold,
                 ),

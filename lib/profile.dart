@@ -204,7 +204,7 @@ class _ProfileState extends State<Profile> {
                     'Profession: ${widget.profession}',
                     textAlign: TextAlign.start,
                     style: TextStyle(
-                      fontSize: screenWidth * .045,
+                      fontSize: screenWidth * .04,
                       height: 2,
                       fontWeight: FontWeight.bold,
                     ),
@@ -217,7 +217,7 @@ class _ProfileState extends State<Profile> {
               child: Text(
                 'Salary: \$${widget.salary}',
                 style: TextStyle(
-                  fontSize: screenWidth * .045,
+                  fontSize: screenWidth * .04,
                   height: 2,
                   fontWeight: FontWeight.bold,
                 ),
@@ -228,7 +228,7 @@ class _ProfileState extends State<Profile> {
               child: Text(
                 'Location: ${widget.location}',
                 style: TextStyle(
-                  fontSize: screenWidth * .045,
+                  fontSize: screenWidth * .04,
                   height: 2,
                   fontWeight: FontWeight.bold,
                 ),

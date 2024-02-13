@@ -10,6 +10,7 @@ import 'package:demo_app/bloc/home_bloc.dart';
 import 'package:demo_app/bloc/home_event.dart';
 import 'package:demo_app/commons/design.dart';
 import 'package:demo_app/model/message.dart';
+import 'package:demo_app/prefs/shared_prefs.dart';
 import 'package:demo_app/profile_chat.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,7 +25,7 @@ class CareerChat extends StatefulWidget {
   final String location;
   final int salary;
   final int distance;
-  final double? rating;
+  double? rating;
 
   CareerChat({
     required this.name,
@@ -63,8 +64,6 @@ class _CareerChatState extends State<CareerChat> {
         isTyping = true;
       },
     );
-    scrollController.animateTo(0.0,
-        duration: const Duration(seconds: 1), curve: Curves.easeOut);
 
     ChatGPTCompletions.instance.textCompletions(
       TextCompletionsParams(
@@ -100,8 +99,6 @@ class _CareerChatState extends State<CareerChat> {
       // Debounce 100ms for receive next value
       debounce: const Duration(milliseconds: 100),
     );
-    scrollController.animateTo(0.0,
-        duration: const Duration(seconds: 1), curve: Curves.easeOut);
   }
 
   @override
@@ -112,13 +109,15 @@ class _CareerChatState extends State<CareerChat> {
     _controllerCenter = ConfettiController(
       duration: const Duration(seconds: 1),
     );
-    // sendMsg("$careerPrompt. Say hi");
+    sendMsg("$careerPrompt. Say hi", "Hi!");
     super.initState();
   }
 
   @override
   void dispose() {
     super.dispose();
+    controller.dispose();
+    scrollController.dispose();
     _controllerCenter.dispose(); // Dispose of confetti
   }
 
@@ -232,6 +231,7 @@ class _CareerChatState extends State<CareerChat> {
                                   color: Colors.amber,
                                 ),
                                 onRatingUpdate: (rating) {
+                                  widget.rating = rating;
                                   context.read<HomeBloc>().add(
                                         AddRatingEvent(rating, widget.name),
                                       );
