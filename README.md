@@ -22,6 +22,19 @@ Career Chat is an interactive app that helps you explore different career paths 
 
 To start using Career Chat, simply download the app from the App Store or Google Play Store and create an account. Once logged in, you can begin chatting with career bots, personalizing your account, exploring new careers, and more!
 
+
+
+Home Screen                |  Filter Careers           | Connect with an Helper!
+:-------------------------:|:-------------------------:|:-------------------------:
+![](https://github.com/abrichards10/Demo-App/assets/54547597/f2802c64-e4c7-47ed-8157-25be4e37ae19) | ![](https://github.com/abrichards10/Demo-App/assets/54547597/ea5ef72b-c359-47b8-864c-59095eec3d87) | ![](https://github.com/abrichards10/Demo-App/assets/54547597/53d7ddc8-32d3-4cfb-be48-df8a4d01abc3)
+
+Account                    |  Explore!                 | Rate your experience ⭐
+:-------------------------:|:-------------------------:|:-------------------------:
+![](https://github.com/abrichards10/Demo-App/assets/54547597/75816865-7f4a-4d19-9572-7db1f64939c1) | ![](https://github.com/abrichards10/Demo-App/assets/54547597/a159baa9-ab79-47d6-9358-2178f42cff50) | ![](https://github.com/abrichards10/Demo-App/assets/54547597/c7c3762c-39e0-4362-854b-d5fca0157bba)
+
+
+
+
 ## Feedback
 
 We value your feedback! If you have any suggestions, encounter any issues, or want to share your experience using Career Chat, please contact us at careerchatfeedback@gmail.com. Your feedback helps us improve and enhance the app for all users.
