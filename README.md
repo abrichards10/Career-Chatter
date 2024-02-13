@@ -1,4 +1,4 @@
-# Career Chat
+# Career Chat 👩‍💻
 
 Career Chat is an interactive app that helps you explore different career paths through conversations with AI-generated career bots. With Career Chat, you can personalize your experience, explore random careers, rate your conversations, and save meaningful interactions.
 
