@@ -30,11 +30,15 @@ class PrefsHelper {
   bool get randomImageChosen =>
       Prefs.getBool(PrefKeys.krandomImageChosen) ?? false;
 
+  int get preferredSalary => Prefs.getInt(PrefKeys.kpreferredSalary) ?? 0;
+
   List<String> get savedProfessions =>
       Prefs.getStringList(PrefKeys.ksavedProfessions) ?? [];
 
   set accountName(String value) => Prefs.setString(PrefKeys.kname, value);
   set photo(String value) => Prefs.setString(PrefKeys.kphoto, value);
+  set preferredSalary(int value) =>
+      Prefs.setInt(PrefKeys.kpreferredSalary, value);
 
   // set description(String value) => Prefs.setString(PrefKeys.description, value);
   set profession(String value) => Prefs.setString(PrefKeys.kprofession, value);

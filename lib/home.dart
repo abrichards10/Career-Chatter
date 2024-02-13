@@ -261,7 +261,7 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
             },
           ),
           title: Text(
-            'Career Chatbot',
+            'Career Chat',
             style: TextStyle(
               fontSize: screenWidth * .06,
               fontWeight: FontWeight.bold,

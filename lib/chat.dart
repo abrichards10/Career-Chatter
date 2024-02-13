@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print
 
 import 'dart:async';
 import 'dart:math';
@@ -8,10 +8,8 @@ import 'package:chatgpt_completions/chatgpt_completions.dart';
 import 'package:confetti/confetti.dart';
 import 'package:demo_app/bloc/home_bloc.dart';
 import 'package:demo_app/bloc/home_event.dart';
-import 'package:demo_app/bloc/home_state.dart';
 import 'package:demo_app/commons/design.dart';
 import 'package:demo_app/model/message.dart';
-import 'package:demo_app/profile.dart';
 import 'package:demo_app/profile_chat.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

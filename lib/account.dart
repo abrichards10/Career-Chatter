@@ -33,6 +33,8 @@ class AccountState extends State<Account> with SingleTickerProviderStateMixin {
   List<bool> isSelectedList = List.generate(careersWithEmoji.length,
       (index) => false); // Assuming you have 5 TextButtons
 
+  double _preferredSalary = PrefsHelper().salary.toDouble();
+
   Widget confetti(ConfettiController controllerCenter) {
     return Align(
       alignment: Alignment.topCenter,
@@ -428,58 +430,63 @@ class AccountState extends State<Account> with SingleTickerProviderStateMixin {
                           },
                         );
                       }),
-
-                      // for (var i in careersWithEmoji)
-                      //   TextButton(
-                      //     style: TextButton.styleFrom(
-                      //       backgroundColor: isButtonSelected
-                      //           ? Color.fromARGB(255, 240, 254, 223)
-                      //           : Colors
-                      //               .grey, // Change the background color based on the selected state
-
-                      //       padding: const EdgeInsets.fromLTRB(
-                      //         8,
-                      //         0,
-                      //         8,
-                      //         0,
-                      //       ),
-                      //       elevation: 2,
-                      //       side: BorderSide(
-                      //         color: Color.fromARGB(255, 178, 199, 151),
-                      //       ),
-                      //     ),
-                      //     child: Text(
-                      //       i,
-                      //       style: TextStyle(
-                      //         fontSize: width * .04,
-                      //       ),
-                      //     ),
-                      //     onPressed: () {
-                      //       isButtonSelected = !isButtonSelected;
-                      //       // Toggle the selected state
-
-                      //       print(i);
-                      //       List<String> thisList =
-                      //           PrefsHelper().savedProfessions;
-
-                      //       thisList.insert(
-                      //         0,
-                      //         i.toString(),
-                      //       );
-
-                      //       PrefsHelper().savedProfessions = thisList;
-                      //       print(PrefsHelper().savedProfessions);
-                      //       setState(() {});
-                      //     },
-                      //   ),
-                      // ],
                     ),
                   ),
                 ),
               ),
               Container(
-                height: 200,
+                alignment: Alignment.centerLeft,
+                padding:
+                    EdgeInsets.only(left: 30, top: 30, bottom: 10, right: 30),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Salary Prefs",
+                          style: TextStyle(
+                            fontSize: width * .05,
+                            height: 3,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          "\$${PrefsHelper().preferredSalary}   ",
+                          style: TextStyle(
+                            fontSize: width * .04,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SliderTheme(
+                      data: SliderTheme.of(context).copyWith(
+                        overlayShape: SliderComponentShape.noOverlay,
+                      ),
+                      child: SizedBox(
+                        width: width * 2,
+                        child: Slider(
+                          min: 0,
+                          max: 400000,
+                          divisions: 100,
+                          value: _preferredSalary,
+                          label: PrefsHelper().preferredSalary.toString(),
+                          onChanged: (value) {
+                            setState(() {
+                              _preferredSalary = value;
+                              PrefsHelper().preferredSalary =
+                                  _preferredSalary.toInt();
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
+              SizedBox(
+                height: 200,
+              )
             ],
           ),
         ),
