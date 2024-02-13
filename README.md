@@ -24,7 +24,7 @@ To start using Career Chat, simply download the app from the App Store or Google
 
 
 
-Home Screen                |  Filter Careers           | Connect with an Helper!
+Home Screen                |  Filter Careers           | Connect with a Helper!
 :-------------------------:|:-------------------------:|:-------------------------:
 ![](https://github.com/abrichards10/Demo-App/assets/54547597/f2802c64-e4c7-47ed-8157-25be4e37ae19) | ![](https://github.com/abrichards10/Demo-App/assets/54547597/ea5ef72b-c359-47b8-864c-59095eec3d87) | ![](https://github.com/abrichards10/Demo-App/assets/54547597/53d7ddc8-32d3-4cfb-be48-df8a4d01abc3)
 
