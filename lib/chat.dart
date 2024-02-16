@@ -75,8 +75,8 @@ class _CareerChatState extends State<CareerChat> {
         model: GPTModel.gpt3p5turbo,
       ),
       onStreamValue: (characters) {
-        setState(
-          () {
+        if (mounted) {
+          setState(() {
             msgs.clear();
 
             isTyping = false;
@@ -89,8 +89,8 @@ class _CareerChatState extends State<CareerChat> {
             );
 
             prevResponse = msgs[0].msg;
-          },
-        );
+          });
+        }
       },
       onStreamCreated: (subscription) {
         responseSubscription = subscription;
@@ -164,7 +164,6 @@ class _CareerChatState extends State<CareerChat> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    double boxHeight = screenWidth * .1;
     return Stack(
       children: [
         Scaffold(
@@ -366,7 +365,7 @@ class _CareerChatState extends State<CareerChat> {
                   screenWidth * .04,
                   screenWidth * .02,
                   screenWidth * .04,
-                  screenWidth * .01,
+                  screenWidth * .02,
                 ),
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
@@ -378,7 +377,8 @@ class _CareerChatState extends State<CareerChat> {
                             left: screenWidth * .03,
                             right: screenWidth * .03,
                           ),
-                          width: screenWidth * .5,
+                          width: screenWidth * .6,
+                          height: screenWidth * .3,
                           child: Card(
                             elevation: 2,
                             child: Padding(
@@ -388,11 +388,13 @@ class _CareerChatState extends State<CareerChat> {
                                 screenWidth * .04,
                                 screenWidth * .04,
                               ),
-                              child: Text(
-                                "What are your job responsibilities?",
-                                style: TextStyle(
-                                  fontFamily: mainFont.fontFamily,
-                                  fontSize: screenWidth * .04,
+                              child: Flexible(
+                                child: Text(
+                                  "What are your job responsibilities?",
+                                  style: TextStyle(
+                                    fontFamily: mainFont.fontFamily,
+                                    fontSize: screenWidth * .04,
+                                  ),
                                 ),
                               ),
                             ),
@@ -410,7 +412,8 @@ class _CareerChatState extends State<CareerChat> {
                             left: screenWidth * .03,
                             right: screenWidth * .03,
                           ),
-                          width: screenWidth * .5,
+                          width: screenWidth * .6,
+                          height: screenWidth * .3,
                           child: Card(
                             elevation: 2,
                             child: Padding(
@@ -420,11 +423,13 @@ class _CareerChatState extends State<CareerChat> {
                                 screenWidth * .04,
                                 screenWidth * .04,
                               ),
-                              child: Text(
-                                "What skills are most important for success in this field?",
-                                style: TextStyle(
-                                  fontFamily: mainFont.fontFamily,
-                                  fontSize: screenWidth * .04,
+                              child: Flexible(
+                                child: Text(
+                                  "What skills are most important for success in this field?",
+                                  style: TextStyle(
+                                    fontFamily: mainFont.fontFamily,
+                                    fontSize: screenWidth * .04,
+                                  ),
                                 ),
                               ),
                             ),
@@ -442,7 +447,8 @@ class _CareerChatState extends State<CareerChat> {
                             left: screenWidth * .03,
                             right: screenWidth * .03,
                           ),
-                          width: screenWidth * .5,
+                          width: screenWidth * .6,
+                          height: screenWidth * .3,
                           child: Card(
                             elevation: 2,
                             child: Padding(
@@ -452,11 +458,13 @@ class _CareerChatState extends State<CareerChat> {
                                 screenWidth * .04,
                                 screenWidth * .04,
                               ),
-                              child: Text(
-                                "How do you handle difficult situations or conflicts at work?",
-                                style: TextStyle(
-                                  fontFamily: mainFont.fontFamily,
-                                  fontSize: screenWidth * .04,
+                              child: Flexible(
+                                child: Text(
+                                  "How do you handle difficult situations or conflicts at work?",
+                                  style: TextStyle(
+                                    fontFamily: mainFont.fontFamily,
+                                    fontSize: screenWidth * .04,
+                                  ),
                                 ),
                               ),
                             ),
@@ -475,7 +483,8 @@ class _CareerChatState extends State<CareerChat> {
                             left: screenWidth * .03,
                             right: screenWidth * .03,
                           ),
-                          width: screenWidth * .5,
+                          width: screenWidth * .6,
+                          height: screenWidth * .3,
                           child: Card(
                             elevation: 2,
                             child: Padding(
@@ -485,11 +494,13 @@ class _CareerChatState extends State<CareerChat> {
                                 screenWidth * .04,
                                 screenWidth * .04,
                               ),
-                              child: Text(
-                                "Can you describe a typical day in your job?",
-                                style: TextStyle(
-                                  fontFamily: mainFont.fontFamily,
-                                  fontSize: screenWidth * .04,
+                              child: Flexible(
+                                child: Text(
+                                  "Can you describe a typical day in your job?",
+                                  style: TextStyle(
+                                    fontFamily: mainFont.fontFamily,
+                                    fontSize: screenWidth * .04,
+                                  ),
                                 ),
                               ),
                             ),
@@ -508,7 +519,8 @@ class _CareerChatState extends State<CareerChat> {
                             left: screenWidth * .03,
                             right: screenWidth * .03,
                           ),
-                          width: screenWidth * .5,
+                          width: screenWidth * .6,
+                          height: screenWidth * .3,
                           child: Card(
                             elevation: 2,
                             child: Padding(
@@ -518,11 +530,13 @@ class _CareerChatState extends State<CareerChat> {
                                 screenWidth * .04,
                                 screenWidth * .04,
                               ),
-                              child: Text(
-                                "How do you handle work-life balance in this career?",
-                                style: TextStyle(
-                                  fontFamily: mainFont.fontFamily,
-                                  fontSize: screenWidth * .04,
+                              child: Flexible(
+                                child: Text(
+                                  "How do you handle work-life balance in this career?",
+                                  style: TextStyle(
+                                    fontFamily: mainFont.fontFamily,
+                                    fontSize: screenWidth * .04,
+                                  ),
                                 ),
                               ),
                             ),
@@ -542,7 +556,7 @@ class _CareerChatState extends State<CareerChat> {
               Padding(
                 padding: EdgeInsets.fromLTRB(
                   screenWidth * .04,
-                  screenWidth * .04,
+                  screenWidth * 0,
                   screenWidth * .04,
                   screenWidth * .2,
                 ),

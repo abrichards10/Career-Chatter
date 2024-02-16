@@ -5,12 +5,14 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Career Chat</string>
+	<string>CareerChatter</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
-	<key>CFBundleIcons</key>
+	<key>CFBundleIconName</key>
+	<string>CareerChatter</string>
+	<key>CFBundleIcon</key>
 	<dict>
 		<key>CFBundlePrimaryIcon</key>
 		<dict>

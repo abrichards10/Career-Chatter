@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, avoid_print
+// ignore_for_file: prefer_const_constructors, avoid_print, library_private_types_in_public_api
 
 import 'dart:async';
 import 'dart:math';
@@ -23,6 +23,8 @@ import 'package:random_avatar/random_avatar.dart';
 import 'package:random_name_generator/random_name_generator.dart';
 
 class CareerChatbotPage extends StatefulWidget {
+  const CareerChatbotPage({super.key});
+
   @override
   _CareerChatbotPageState createState() => _CareerChatbotPageState();
 }
@@ -32,7 +34,7 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
   var randomNames =
       RandomNames(Zone.us); // TODO: change for inclusive language regions
 
-  final _random = new Random();
+  final _random = Random();
 
   var profile = ProfileData(
     photo: RandomAvatarString(
@@ -100,8 +102,11 @@ class _CareerChatbotPageState extends State<CareerChatbotPage> {
         model: GPTModel.gpt3p5turbo,
       ),
       onStreamValue: (characters) {
-        profile.description = characters;
-        setState(() {});
+        if (mounted) {
+          setState(() {
+            profile.description = characters;
+          });
+        }
       },
       onStreamCreated: (subscription) {
         responseSubscription = subscription;
